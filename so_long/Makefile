@@ -1,31 +1,19 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/14 14:59:02 by hyunkkim          #+#    #+#              #
-#    Updated: 2022/03/14 19:06:29 by hyunkkim         ###   ########seoul.kr   #
-#                                                                              #
-# **************************************************************************** #
-
 NAME=so_long
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror
-MLX_DIR=./minilibx_mms_20200219/
-MLX_NAME=mlx
-MLX=$(LIB_DIR)lib$(LIB_NAME).dylib
-INCLUDE=-I $(MLX_DIR)
+LIB_NAME=ft
+LIB_DIR=./Libft/
+LIB=$(LIB_DIR)lib$(LIB_NAME).a
+INCLUDE=-I ./Libft
 AR=ar
 ARFLAGS=rcs
 RM=rm -f
-CP=cp
-SRC= test_minilibx.c
+CP=CP
+SRC= map.c
 OBJ=$(SRC:.c=.o)
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) -L$(MLX_DIR) -l$(MLX_NAME) -framework OpenGL -framework AppKit -o $(NAME)
+	$(CC) $(OBJ) -L$(LIB_DIR) -l$(LIB_NAME) -o $(NAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
@@ -33,9 +21,7 @@ $(NAME) : $(OBJ)
 $(LIB) :
 	make -C $(LIB_DIR) all
 
-all : $(NAME)
-
-clean :
+clean:
 	make -C $(LIB_DIR) clean
 	$(RM) $(OBJ)
 
