@@ -121,14 +121,29 @@ void    assign_map_arr(int map_fd, t_map **map)
     }
 }
 
-/*
-int is_map_wall_covered(char **map_arr)
+int is_map_wall_covered(t_map *map)
 {
-    // map 가로 세로 길이에 맞춰서 검사.
-    // 첫줄, 마지막줄 1만
-    // 나머지는 앞, 뒤만;
+    int i;
+    int j;
+
+    i = 0;
+    while (i < map->row)
+    {
+        j = 0;
+        while (j < map->col)
+        {
+            if ((i == 0 || i == (map->row) - 1) \
+            || (j == 0 || j == (map->col) - 1))
+            {
+                if (map->map_coord[i][j] != '1')
+                    return (0);
+            }
+            j++;
+        }
+        i++;
+    }
     return (1);
-}*/
+}
 
 int main(int argc, char **argv)
 {
@@ -148,10 +163,14 @@ int main(int argc, char **argv)
     {
         printf("the row of the map: %d\n", the_map->row);
         printf("the col of the map: %d\n", the_map->col);
+        close(map_fd);
     }
     else
+    {
         printf("error: the map isn't right\n");
-    close(map_fd);
+        close(map_fd);
+        return (0);
+    }
     map_fd = valid_map_open((const char *)argv[1]);
     the_map->map_coord = alloc_map_arr(the_map);
     assign_map_arr(map_fd, &the_map);
@@ -165,6 +184,7 @@ int main(int argc, char **argv)
     printf("coord(1, 1): %c\n", the_map->map_coord[1][1]);
     printf("total player num: %d\n", the_map->player_num);
     printf("total exit num: %d\n", the_map->exit_num);
+    printf("wall covered?: %d\n", is_map_wall_covered(the_map));
     close(map_fd);
     return (0);
 }
