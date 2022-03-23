@@ -61,6 +61,17 @@ int count_map_component(char *s, t_map **map)
     return (i);
 }
 
+int check_map_component(t_map *map)
+{
+    if (map->player_num != 1)
+        return (0);
+    else if (map->exit_num != 1)
+        return (0);
+    else if (map->item_num < 1)
+        return (0);
+    return (1);
+}
+
 int count_map_line(int map_fd, t_map **map)
 {
     char    *map_line;
@@ -80,8 +91,7 @@ int count_map_line(int map_fd, t_map **map)
     }
     free(map_line);
     map_line = NULL;
-    // 밑 부분을 따로 빼는게 좋을까? 아니면 그냥 둘까?
-    if ((*map)->player_num != 1 || (*map)->exit_num != 1 || (*map)->item_num < 1)
+    if (!check_map_component(*map))
         return (0);
     return (1);
 }
