@@ -5,12 +5,14 @@
 #include "so_long.h"
 
 // argv를 map main 함수 앞에서 거르는데 좋을듯.
-
+// free_arr, free_arr_arr같은 많이 쓰이는 함수를 util로 빼기.
 int valid_map_open(const char *dir)
 {
     int ret_fd;
 
     ret_fd = -1;
+    // ft_strncmp(".ber", dir + (ft_strlen(dir) - 4)?, 4);
+    // cmp로 비교해서 일치하지 않으면 -1 반환.
     if (!ft_strnstr(dir, ".ber", ft_strlen(dir)))
         return (-1);
     ret_fd = open(dir, O_RDONLY);
@@ -24,6 +26,7 @@ t_map   *map_init(void)
     t_map   *ret;
 
     ret = (t_map *)malloc(sizeof(t_map));
+    // ret 할당 실패시 return NULL;
     ret->row = 0;
     ret->col = 0;
     ret->player_num = 0;
@@ -172,7 +175,11 @@ void    free_map_arr(char **the_map)
     }
     free(the_map);
     the_map = NULL;
-}*/
+}
+
+실제 main 함수에 t_map을 넘길 루트 함수 만들기.
+t_map   *map_parsing(char *dir);
+*/
 
 int main(int argc, char **argv)
 {
@@ -204,11 +211,17 @@ int main(int argc, char **argv)
         printf("%s|\n", the_map->map_coord[i]);
         i++;
     }
-    printf("coord(2, 3): %c\n", the_map->map_coord[2][3]);
+    printf("coord(3, 1): %c\n", the_map->map_coord[3][1]);
     printf("coord(1, 1): %c\n", the_map->map_coord[1][1]);
     printf("total player num: %d\n", the_map->player_num);
     printf("total exit num: %d\n", the_map->exit_num);
     printf("wall covered?: %d\n", is_map_wall_covered(the_map));
+    printf("----\nmove player (3, 1) to (1, 1)\n");
+	the_map->map_coord[3][1] = '0';
+	the_map->map_coord[1][1] = 'P';
+	i = 0;
+	while (i < the_map->row)
+		printf("%s|\n", the_map->map_coord[i++]);
     close(map_fd);
     return (0);
 }
