@@ -8,6 +8,8 @@ int main(int argc, char **argv)
     if (argc != 2)
         return (1);
     the_map = map_parsing((const char*)argv[1]);
+    if (!the_map)
+        return (1);
     int i = 0;
     while (i < the_map->row)
     {
