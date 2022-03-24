@@ -33,24 +33,34 @@ t_data  *t_data_init(t_map *map)
     return (ret);
 }
 
+void    draw_fixed_component(char c, int i, int j, t_data *data)
+{
+    if (c == '1')
+        mlx_put_image_to_window(data->mlx, data->win, data->wall, data->img_px * j, data->img_px * i);
+    else if (c == '0')
+        mlx_put_image_to_window(data->mlx, data->win, data->space, data->img_px * j, data->img_px * i);
+    else if (c == 'E')
+        mlx_put_image_to_window(data->mlx, data->win, data->exit, data->img_px * j, data->img_px * i);
+}
+
+//void    draw_mutable_component();
+
 void    draw_mlx_win(t_data *data, t_map *map)
 {
     int i;
     int j;
+
     i = 0;
     while (i < map->row)
     {
         j = 0;
         while (j < map->col)
         {
-            if (map->map_coord[i][j] == '1')
-                mlx_put_image_to_window(data->mlx, data->win, data->wall, data->img_px * j, data->img_px * i);
-            else if (map->map_coord[i][j] == '0')
-                mlx_put_image_to_window(data->mlx, data->win, data->space, data->img_px * j, data->img_px * i);
+            if (map->map_coord[i][j] == '1' || map->map_coord[i][j] == '0' \
+            || map->map_coord[i][j] == 'E')
+                draw_fixed_component(map->map_coord[i][j], i, j, data);
             else if (map->map_coord[i][j] == 'P')
                 mlx_put_image_to_window(data->mlx, data->win, data->player, data->img_px * j, data->img_px * i);
-            else if (map->map_coord[i][j] == 'E')
-                mlx_put_image_to_window(data->mlx, data->win, data->exit, data->img_px * j, data->img_px * i);
             else if (map->map_coord[i][j] == 'C')
                 mlx_put_image_to_window(data->mlx, data->win, data->item, data->img_px * j, data->img_px * i);
             j++;
