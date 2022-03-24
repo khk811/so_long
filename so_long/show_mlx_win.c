@@ -3,6 +3,12 @@
 #include <mlx.h>
 #include "so_long.h"
 
+typedef struct s_coord
+{
+    int x;
+    int y;
+}   t_coord;
+
 typedef struct s_data
 {
     void    *mlx;
@@ -13,6 +19,7 @@ typedef struct s_data
     int *player;
     int *exit;
     int *item;
+    t_coord *player_coord;
 }   t_data;
 
 t_data  *t_data_init(t_map *map)
@@ -30,6 +37,15 @@ t_data  *t_data_init(t_map *map)
     ret->player = mlx_xpm_file_to_image(ret->mlx, "./img/playerP.xpm", &(ret->img_px), &(ret->img_px));
     ret->exit = mlx_xpm_file_to_image(ret->mlx, "./img/exitE.xpm", &(ret->img_px), &(ret->img_px));
     ret->item = mlx_xpm_file_to_image(ret->mlx, "./img/itemC.xpm", &(ret->img_px), &(ret->img_px));
+    ret->player_coord = (t_coord *)malloc(sizeof(t_coord));
+    if (!(ret->player_coord))
+    {
+        free(ret);
+        ret = NULL;
+        return(NULL);
+    }
+    ret->player_coord->x = 0;
+    ret->player_coord->y = 0;
     return (ret);
 }
 
@@ -47,6 +63,8 @@ void    draw_mutable_component(char component, int i, int j, t_data *data)
 {
     if (component == 'P')
     {
+        data->player_coord->x = j;
+        data->player_coord->y = i;
         mlx_put_image_to_window(data->mlx, data->win, data->player, data->img_px * j, data->img_px * i);
     }
     else if (component == 'C')
@@ -76,7 +94,6 @@ void    draw_mlx_win(t_data *data, t_map *map)
         }
         i++;
     }
-    mlx_loop(data->mlx);
 }
 
 void    show_mlx_win(t_map *map)
@@ -86,4 +103,5 @@ void    show_mlx_win(t_map *map)
     mlx1 = t_data_init(map);
     if (mlx1)
         draw_mlx_win(mlx1, map);
+    mlx_loop(mlx1->mlx);
 }
