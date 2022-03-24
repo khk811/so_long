@@ -161,67 +161,32 @@ int is_map_wall_covered(t_map *map)
     }
     return (1);
 }
-/*
-void    free_map_arr(char **the_map)
+//실제 main 함수에 t_map을 넘길 루트 함수 만들기.
+t_map   *map_parsing(const char *dir)
 {
-    int i;
-
-    i = 0;
-    while (the_map[i])
-    {
-        free(the_map[i]);
-        the_map[i] = NULL;
-        i++;
-    }
-    free(the_map);
-    the_map = NULL;
-}
-
-실제 main 함수에 t_map을 넘길 루트 함수 만들기.
-t_map   *map_parsing(char *dir);
-*/
-
-int main(int argc, char **argv)
-{
-    int map_fd;
     t_map   *the_map;
-    int ret_flag;
+    int map_fd;
+    int is_ok;
 
-    ret_flag = 0;
-    if (argc != 2)
-        return (0);
     the_map = map_init();
-    map_fd = valid_map_open((const char *)argv[1]);
+    map_fd = valid_map_open(dir);
     if (map_fd < 0)
-        return (0);
-    ret_flag = count_map_line(map_fd, &the_map);
-    if (ret_flag != 1)
+        return (NULL);
+    is_ok = count_map_line(map_fd, &the_map);
+    if (is_ok != 1)
     {
         printf("error: the map isn't right\n");
+        free(the_map);
+        the_map = NULL;
         close(map_fd);
-        return (0);
+        return (NULL);
     }
     close(map_fd);
-    map_fd = valid_map_open((const char *)argv[1]);
+    map_fd = valid_map_open(dir);
+    if (map_fd < 0)
+        return (NULL);
     the_map->map_coord = alloc_map_arr(the_map);
     assign_map_arr(map_fd, &the_map);
-    int i = 0;
-    while (i < the_map->row)
-    {
-        printf("%s|\n", the_map->map_coord[i]);
-        i++;
-    }
-    printf("coord(3, 1): %c\n", the_map->map_coord[3][1]);
-    printf("coord(1, 1): %c\n", the_map->map_coord[1][1]);
-    printf("total player num: %d\n", the_map->player_num);
-    printf("total exit num: %d\n", the_map->exit_num);
-    printf("wall covered?: %d\n", is_map_wall_covered(the_map));
-    printf("----\nmove player (3, 1) to (1, 1)\n");
-	the_map->map_coord[3][1] = '0';
-	the_map->map_coord[1][1] = 'P';
-	i = 0;
-	while (i < the_map->row)
-		printf("%s|\n", the_map->map_coord[i++]);
     close(map_fd);
-    return (0);
+    return (the_map);
 }
