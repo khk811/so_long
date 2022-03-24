@@ -15,18 +15,26 @@ typedef struct s_data
     int *item;
 }   t_data;
 
-void    show_mlx_win(t_map *map)
+t_data  *t_data_init(t_map *map)
 {
-    t_data  mlx1;
+    t_data  *ret;
 
-    mlx1.mlx = mlx_init();
-    mlx1.img_px = 60;
-    mlx1.win = mlx_new_window(mlx1.mlx, (mlx1.img_px * map->col), (mlx1.img_px * map->row), "so_long");
-    mlx1.wall = mlx_xpm_file_to_image(mlx1.mlx, "./img/wall1.xpm", &(mlx1.img_px), &(mlx1.img_px));
-    mlx1.space = mlx_xpm_file_to_image(mlx1.mlx, "./img/void0.xpm", &(mlx1.img_px), &(mlx1.img_px));
-    mlx1.player = mlx_xpm_file_to_image(mlx1.mlx, "./img/playerP.xpm", &(mlx1.img_px), &(mlx1.img_px));
-    mlx1.exit = mlx_xpm_file_to_image(mlx1.mlx, "./img/exitE.xpm", &(mlx1.img_px), &(mlx1.img_px));
-    mlx1.item = mlx_xpm_file_to_image(mlx1.mlx, "./img/itemC.xpm", &(mlx1.img_px), &(mlx1.img_px));
+    ret = (t_data *)malloc(sizeof(t_data));
+    if (!ret)
+        return (NULL);
+    ret->mlx = mlx_init();
+    ret->img_px = 60;
+    ret->win = mlx_new_window(ret->mlx, (ret->img_px * map->col), (ret->img_px * map->row), "so_long");
+    ret->wall = mlx_xpm_file_to_image(ret->mlx, "./img/wall1.xpm", &(ret->img_px), &(ret->img_px));
+    ret->space = mlx_xpm_file_to_image(ret->mlx, "./img/void0.xpm", &(ret->img_px), &(ret->img_px));
+    ret->player = mlx_xpm_file_to_image(ret->mlx, "./img/playerP.xpm", &(ret->img_px), &(ret->img_px));
+    ret->exit = mlx_xpm_file_to_image(ret->mlx, "./img/exitE.xpm", &(ret->img_px), &(ret->img_px));
+    ret->item = mlx_xpm_file_to_image(ret->mlx, "./img/itemC.xpm", &(ret->img_px), &(ret->img_px));
+    return (ret);
+}
+
+void    draw_mlx_win(t_data *data, t_map *map)
+{
     int i;
     int j;
     i = 0;
@@ -36,18 +44,27 @@ void    show_mlx_win(t_map *map)
         while (j < map->col)
         {
             if (map->map_coord[i][j] == '1')
-                mlx_put_image_to_window(mlx1.mlx, mlx1.win, mlx1.wall, mlx1.img_px * j, mlx1.img_px * i);
+                mlx_put_image_to_window(data->mlx, data->win, data->wall, data->img_px * j, data->img_px * i);
             else if (map->map_coord[i][j] == '0')
-                mlx_put_image_to_window(mlx1.mlx, mlx1.win, mlx1.space, mlx1.img_px * j, mlx1.img_px * i);
+                mlx_put_image_to_window(data->mlx, data->win, data->space, data->img_px * j, data->img_px * i);
             else if (map->map_coord[i][j] == 'P')
-                mlx_put_image_to_window(mlx1.mlx, mlx1.win, mlx1.player, mlx1.img_px * j, mlx1.img_px * i);
+                mlx_put_image_to_window(data->mlx, data->win, data->player, data->img_px * j, data->img_px * i);
             else if (map->map_coord[i][j] == 'E')
-                mlx_put_image_to_window(mlx1.mlx, mlx1.win, mlx1.exit, mlx1.img_px * j, mlx1.img_px * i);
+                mlx_put_image_to_window(data->mlx, data->win, data->exit, data->img_px * j, data->img_px * i);
             else if (map->map_coord[i][j] == 'C')
-                mlx_put_image_to_window(mlx1.mlx, mlx1.win, mlx1.item, mlx1.img_px * j, mlx1.img_px * i);
+                mlx_put_image_to_window(data->mlx, data->win, data->item, data->img_px * j, data->img_px * i);
             j++;
         }
         i++;
     }
-    mlx_loop(mlx1.mlx);
+    mlx_loop(data->mlx);
+}
+
+void    show_mlx_win(t_map *map)
+{
+    t_data  *mlx1;
+
+    mlx1 = t_data_init(map);
+    if (mlx1)
+        draw_mlx_win(mlx1, map);
 }
