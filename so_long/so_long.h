@@ -23,4 +23,6 @@ void    assign_map_arr(int map_fd, t_map **map);
 int is_map_wall_covered(t_map *map);
 t_map   *map_parsing(const char *dir);
 
+// rendering??
+void    show_mlx_win(t_map *map);
 #endif

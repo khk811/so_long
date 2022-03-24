@@ -20,6 +20,7 @@ int main(int argc, char **argv)
     printf("coord(1, 1): %c\n", the_map->map_coord[1][1]);
     printf("total player num: %d\n", the_map->player_num);
     printf("total exit num: %d\n", the_map->exit_num);
-    printf("is map wall-covered?: %d\n", is_map_wall_covered(the_map));
+    if (is_map_wall_covered(the_map))
+        show_mlx_win(the_map);
     return (0);
 }
