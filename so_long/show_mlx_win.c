@@ -33,22 +33,33 @@ t_data  *t_data_init(t_map *map)
     return (ret);
 }
 
-void    draw_fixed_component(char c, int i, int j, t_data *data)
+void    draw_fixed_component(char component, int i, int j, t_data *data)
 {
-    if (c == '1')
+    if (component == '1')
         mlx_put_image_to_window(data->mlx, data->win, data->wall, data->img_px * j, data->img_px * i);
-    else if (c == '0')
+    else if (component == '0')
         mlx_put_image_to_window(data->mlx, data->win, data->space, data->img_px * j, data->img_px * i);
-    else if (c == 'E')
+    else if (component == 'E')
         mlx_put_image_to_window(data->mlx, data->win, data->exit, data->img_px * j, data->img_px * i);
 }
 
-//void    draw_mutable_component();
+void    draw_mutable_component(char component, int i, int j, t_data *data)
+{
+    if (component == 'P')
+    {
+        mlx_put_image_to_window(data->mlx, data->win, data->player, data->img_px * j, data->img_px * i);
+    }
+    else if (component == 'C')
+    {
+        mlx_put_image_to_window(data->mlx, data->win, data->item, data->img_px * j, data->img_px * i);
+    }
+}
 
 void    draw_mlx_win(t_data *data, t_map *map)
 {
     int i;
     int j;
+    char    component;
 
     i = 0;
     while (i < map->row)
@@ -56,13 +67,11 @@ void    draw_mlx_win(t_data *data, t_map *map)
         j = 0;
         while (j < map->col)
         {
-            if (map->map_coord[i][j] == '1' || map->map_coord[i][j] == '0' \
-            || map->map_coord[i][j] == 'E')
-                draw_fixed_component(map->map_coord[i][j], i, j, data);
-            else if (map->map_coord[i][j] == 'P')
-                mlx_put_image_to_window(data->mlx, data->win, data->player, data->img_px * j, data->img_px * i);
-            else if (map->map_coord[i][j] == 'C')
-                mlx_put_image_to_window(data->mlx, data->win, data->item, data->img_px * j, data->img_px * i);
+            component = map->map_coord[i][j];
+            if (component == '1' || component== '0' || component== 'E')
+                draw_fixed_component(component, i, j, data);
+            else if (component== 'P' || component == 'C')
+                draw_mutable_component(component, i, j, data);
             j++;
         }
         i++;
