@@ -176,8 +176,6 @@ t_map   *map_parsing(const char *dir)
     if (is_ok != 1)
     {
         printf("error: the map isn't right\n");
-        free(the_map);
-        the_map = NULL;
         close(map_fd);
         return (NULL);
     }
