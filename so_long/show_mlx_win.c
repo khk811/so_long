@@ -114,9 +114,56 @@ t_data  *change_coord(int keycode, t_data *data)
     {
         if (data->map->map_coord[curr_y - 1][curr_x] != '1')
         {
+            if (data->map->map_coord[curr_y - 1][curr_x] == 'C')
+            {
+                data->map->item_num--;
+                printf("item collected\n");
+            }
             data->map->map_coord[curr_y - 1][curr_x] = 'P';
             data->map->map_coord[curr_y][curr_x] = '0';
             data->player_coord->y--;
+        }
+    }
+    else if (keycode == DOWN)
+    {
+        if (data->map->map_coord[curr_y + 1][curr_x] != '1')
+        {
+            if (data->map->map_coord[curr_y + 1][curr_x] == 'C')
+            {
+                data->map->item_num--;
+                printf("item collected\n");
+            }
+            data->map->map_coord[curr_y + 1][curr_x] = 'P';
+            data->map->map_coord[curr_y][curr_x] = '0';
+            data->player_coord->y++;
+        }
+    }
+    else if (keycode == RIGHT)
+    {
+        if (data->map->map_coord[curr_y][curr_x + 1] != '1')
+        {
+            if (data->map->map_coord[curr_y][curr_x + 1] == 'C')
+            {
+                data->map->item_num--;
+                printf("item collected\n");
+            }
+            data->map->map_coord[curr_y][curr_x + 1] = 'P';
+            data->map->map_coord[curr_y][curr_x] = '0';
+            data->player_coord->x++;
+        }
+    }
+    else if (keycode == LEFT)
+    {
+        if (data->map->map_coord[curr_y][curr_x - 1] != '1')
+        {
+            if (data->map->map_coord[curr_y][curr_x - 1] == 'C')
+            {
+                data->map->item_num--;
+                printf("item collected\n");
+            }
+            data->map->map_coord[curr_y][curr_x - 1] = 'P';
+            data->map->map_coord[curr_y][curr_x] = '0';
+            data->player_coord->x--;
         }
     }
     return (data);
@@ -125,10 +172,11 @@ t_data  *change_coord(int keycode, t_data *data)
 // (*f)(int keycode, void *param); **param이면 segfault.
 int press_mov_key(int keycode, t_data *data)
 {
-    if (keycode == UP)
+    if (data->map->item_num == 0)
+        printf("the game should be end now\n");
+    if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
     {
         printf("curr player coord: %d, %d\n", data->player_coord->x, data->player_coord->y);
-        printf("UP W key pressed\n");
         data = change_coord(keycode, data);
         printf("move to-> %d, %d\n", data->player_coord->x, data->player_coord->y);
     }
