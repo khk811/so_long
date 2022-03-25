@@ -107,64 +107,32 @@ t_data  *change_coord(int keycode, t_data *data)
 {
     int curr_x;
     int curr_y;
+    int add_x;
+    int add_y;
 
     curr_x = data->player_coord->x;
     curr_y = data->player_coord->y;
+    add_x = 0;
+    add_y = 0;
     if (keycode == UP)
-    {
-        if (data->map->map_coord[curr_y - 1][curr_x] != '1')
-        {
-            if (data->map->map_coord[curr_y - 1][curr_x] == 'C')
-            {
-                data->map->item_num--;
-                printf("item collected\n");
-            }
-            data->map->map_coord[curr_y - 1][curr_x] = 'P';
-            data->map->map_coord[curr_y][curr_x] = '0';
-            data->player_coord->y--;
-        }
-    }
+        add_y = -1;
     else if (keycode == DOWN)
-    {
-        if (data->map->map_coord[curr_y + 1][curr_x] != '1')
-        {
-            if (data->map->map_coord[curr_y + 1][curr_x] == 'C')
-            {
-                data->map->item_num--;
-                printf("item collected\n");
-            }
-            data->map->map_coord[curr_y + 1][curr_x] = 'P';
-            data->map->map_coord[curr_y][curr_x] = '0';
-            data->player_coord->y++;
-        }
-    }
+        add_y = 1;
     else if (keycode == RIGHT)
-    {
-        if (data->map->map_coord[curr_y][curr_x + 1] != '1')
-        {
-            if (data->map->map_coord[curr_y][curr_x + 1] == 'C')
-            {
-                data->map->item_num--;
-                printf("item collected\n");
-            }
-            data->map->map_coord[curr_y][curr_x + 1] = 'P';
-            data->map->map_coord[curr_y][curr_x] = '0';
-            data->player_coord->x++;
-        }
-    }
+        add_x = 1;
     else if (keycode == LEFT)
+        add_x = -1;
+    if (data->map->map_coord[curr_y + add_y][curr_x + add_x] != '1')
     {
-        if (data->map->map_coord[curr_y][curr_x - 1] != '1')
+        if (data->map->map_coord[curr_y + add_y][curr_x + add_x] == 'C')
         {
-            if (data->map->map_coord[curr_y][curr_x - 1] == 'C')
-            {
-                data->map->item_num--;
-                printf("item collected\n");
-            }
-            data->map->map_coord[curr_y][curr_x - 1] = 'P';
-            data->map->map_coord[curr_y][curr_x] = '0';
-            data->player_coord->x--;
+            data->map->item_num--;
+            printf("item collected\n");
         }
+        data->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
+        data->map->map_coord[curr_y][curr_x] = '0';
+        data->player_coord->x += add_x;
+        data->player_coord->y += add_y;
     }
     return (data);
 }
