@@ -103,16 +103,24 @@ void    draw_mlx_win(t_data *data, t_map *map)
     }
 }
 
-t_coord    *change_coord(int keycode, t_coord *player_coord)
+t_data  *change_coord(int keycode, t_data *data)
 {
+    int curr_x;
+    int curr_y;
+
+    curr_x = data->player_coord->x;
+    curr_y = data->player_coord->y;
     if (keycode == UP)
     {
-        player_coord->y++;
+        if (data->map->map_coord[curr_y - 1][curr_x] != '1')
+        {
+            data->map->map_coord[curr_y - 1][curr_x] = 'P';
+            data->map->map_coord[curr_y][curr_x] = '0';
+            data->player_coord->y--;
+        }
     }
-    return (player_coord);
+    return (data);
 }
-
-void    update_map_arr(t_map **map);
 
 // (*f)(int keycode, void *param); **param이면 segfault.
 int press_mov_key(int keycode, t_data *data)
@@ -121,7 +129,7 @@ int press_mov_key(int keycode, t_data *data)
     {
         printf("curr player coord: %d, %d\n", data->player_coord->x, data->player_coord->y);
         printf("UP W key pressed\n");
-        data->player_coord = change_coord(keycode, data->player_coord);
+        data = change_coord(keycode, data);
         printf("move to-> %d, %d\n", data->player_coord->x, data->player_coord->y);
     }
     mlx_clear_window(data->mlx, data->win);
