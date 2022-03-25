@@ -3,6 +3,11 @@
 #include <mlx.h>
 #include "so_long.h"
 
+#define UP      13
+#define DOWN    1
+#define RIGHT   2
+#define LEFT    0
+
 typedef struct s_coord
 {
     int x;
@@ -20,6 +25,7 @@ typedef struct s_data
     int *exit;
     int *item;
     t_coord *player_coord;
+    t_map   *map;
 }   t_data;
 
 t_data  *t_data_init(t_map *map)
@@ -46,6 +52,7 @@ t_data  *t_data_init(t_map *map)
     }
     ret->player_coord->x = 0;
     ret->player_coord->y = 0;
+    ret->map = map;
     return (ret);
 }
 
@@ -96,6 +103,22 @@ void    draw_mlx_win(t_data *data, t_map *map)
     }
 }
 
+t_coord    *change_coord(int keycode, t_coord *player_coord);
+
+void    update_map_arr(t_map **map);
+
+// (*f)(int keycode, void *param); **param이면 segfault.
+int press_mov_key(int keycode, t_data *data)
+{
+    if (keycode == UP)
+    {
+        printf("UP W key pressed\n");
+    }
+    mlx_clear_window(data->mlx, data->win);
+    draw_mlx_win(data, data->map);
+    return (0);
+}
+
 void    show_mlx_win(t_map *map)
 {
     t_data  *mlx1;
@@ -103,5 +126,6 @@ void    show_mlx_win(t_map *map)
     mlx1 = t_data_init(map);
     if (mlx1)
         draw_mlx_win(mlx1, map);
+    mlx_hook(mlx1->win, 2, 0, press_mov_key, mlx1);
     mlx_loop(mlx1->mlx);
 }
