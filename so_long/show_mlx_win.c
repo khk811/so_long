@@ -129,6 +129,16 @@ t_data  *change_coord(int keycode, t_data *data)
             data->map->item_num--;
             printf("item collected\n");
         }
+        if (data->map->map_coord[curr_y + add_y][curr_x + add_x] == 'E' && \
+        data->map->item_num == 0)
+            {
+                data->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
+                data->map->map_coord[curr_y][curr_x] = '0';
+                data->player_coord->x += add_x;
+                data->player_coord->y += add_y;
+                // exit 전에 할당 해제를 해야할것. 메모리 누수 발생할 수 있음!
+                exit(0);
+            }
         data->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
         data->map->map_coord[curr_y][curr_x] = '0';
         data->player_coord->x += add_x;
