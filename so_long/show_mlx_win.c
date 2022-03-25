@@ -103,7 +103,14 @@ void    draw_mlx_win(t_data *data, t_map *map)
     }
 }
 
-t_coord    *change_coord(int keycode, t_coord *player_coord);
+t_coord    *change_coord(int keycode, t_coord *player_coord)
+{
+    if (keycode == UP)
+    {
+        player_coord->y++;
+    }
+    return (player_coord);
+}
 
 void    update_map_arr(t_map **map);
 
@@ -112,7 +119,10 @@ int press_mov_key(int keycode, t_data *data)
 {
     if (keycode == UP)
     {
+        printf("curr player coord: %d, %d\n", data->player_coord->x, data->player_coord->y);
         printf("UP W key pressed\n");
+        data->player_coord = change_coord(keycode, data->player_coord);
+        printf("move to-> %d, %d\n", data->player_coord->x, data->player_coord->y);
     }
     mlx_clear_window(data->mlx, data->win);
     draw_mlx_win(data, data->map);
