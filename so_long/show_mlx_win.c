@@ -25,6 +25,7 @@ typedef struct s_data
     int *exit;
     int *item;
     t_coord *player_coord;
+    int player_move;
     t_coord *exit_coord;
     t_map   *map;
 }   t_data;
@@ -51,6 +52,7 @@ t_data  *t_data_init(t_map *map)
         ret = NULL;
         return(NULL);
     }
+    ret->player_move = 0;
     ret->exit_coord = (t_coord *)malloc(sizeof(t_coord));
     if (!(ret->exit_coord))
     {
@@ -151,6 +153,8 @@ t_data  *change_coord(int keycode, t_data *data)
                 data->map->map_coord[curr_y][curr_x] = '0';
                 data->player_coord->x += add_x;
                 data->player_coord->y += add_y;
+                data->player_move++;
+                printf("player_move: %d\n", data->player_move);
                 // exit 전에 할당 해제를 해야할것. 메모리 누수 발생할 수 있음!
                 exit(0);
             }
@@ -164,6 +168,8 @@ t_data  *change_coord(int keycode, t_data *data)
         data->map->map_coord[curr_y][curr_x] = '0';
         data->player_coord->x += add_x;
         data->player_coord->y += add_y;
+        data->player_move++;
+        printf("player_move: %d\n", data->player_move);
     }
     return (data);
 }
@@ -171,14 +177,8 @@ t_data  *change_coord(int keycode, t_data *data)
 // (*f)(int keycode, void *param); **param이면 segfault.
 int press_mov_key(int keycode, t_data *data)
 {
-    if (data->map->item_num == 0)
-        printf("the game should be end now\n");
     if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
-    {
-        printf("curr player coord: %d, %d\n", data->player_coord->x, data->player_coord->y);
         data = change_coord(keycode, data);
-        printf("move to-> %d, %d\n", data->player_coord->x, data->player_coord->y);
-    }
     mlx_clear_window(data->mlx, data->win);
     draw_mlx_win(data, data->map);
     return (0);
