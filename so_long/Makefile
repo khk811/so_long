@@ -17,7 +17,7 @@ SRC= main.c \
 	 show_mlx_win.c
 OBJ=$(SRC:.c=.o)
 
-$(NAME) : $(OBJ)
+$(NAME) : $(OBJ) $(LIB) $(MLX)
 	$(CC) $(CFLAGS) $(OBJ) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -framework OpenGL -framework Appkit -o $(NAME)
 
 %.o : %.c
@@ -25,9 +25,11 @@ $(NAME) : $(OBJ)
 
 $(LIB) :
 	make -C $(LIB_DIR) all
+	cp $(LIB) ./
 
 $(MLX) :
 	make -C $(MLX_DIR) all
+	cp $(MLX) ./
 
 all : $(NAME)
 
@@ -35,6 +37,7 @@ clean :
 	make -C $(LIB_DIR) clean
 	make -C $(MLX_DIR) clean
 	$(RM) $(OBJ)
+	$(RM) $(NAME)
 
 leaks : 
 	$(CC) $(CFLAGS) $(SRC) -L$(LIB_DIR) -l$(LIB_NAME)
