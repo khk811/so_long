@@ -3,34 +3,6 @@
 #include <mlx.h>
 #include "so_long.h"
 
-#define UP      13
-#define DOWN    1
-#define RIGHT   2
-#define LEFT    0
-#define ESC     53
-
-typedef struct s_coord
-{
-    int x;
-    int y;
-}   t_coord;
-
-typedef struct s_data
-{
-    void    *mlx;
-    void    *win;
-    int img_px;
-    int *wall;
-    int *space;
-    int *player;
-    int *exit;
-    int *item;
-    t_coord *player_coord;
-    int player_move;
-    t_coord *exit_coord;
-    t_map   *map;
-}   t_data;
-
 t_data  *t_data_init(t_map *map)
 {
     t_data  *ret;

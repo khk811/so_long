@@ -1,6 +1,12 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
+#define UP      13
+#define DOWN    1
+#define RIGHT   2
+#define LEFT    0
+#define ESC     53
+
 typedef struct s_map
 {
     char    **map_coord;
@@ -10,6 +16,28 @@ typedef struct s_map
     int exit_num;
     int item_num;
 }   t_map;
+
+typedef struct s_coord
+{
+    int x;
+    int y;
+}   t_coord;
+
+typedef struct s_data
+{
+    void    *mlx;
+    void    *win;
+    int img_px;
+    int *wall;
+    int *space;
+    int *player;
+    int *exit;
+    int *item;
+    t_coord *player_coord;
+    int player_move;
+    t_coord *exit_coord;
+    t_map   *map;
+}   t_data;
 
 // map related funcs.
 int valid_map_open(const char *dir);
