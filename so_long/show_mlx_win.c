@@ -3,11 +3,11 @@
 #include <mlx.h>
 #include "so_long.h"
 
-t_data  *t_data_init(t_map *map)
+t_game  *game_init(t_map *map)
 {
-    t_data  *ret;
+    t_game  *ret;
 
-    ret = (t_data *)malloc(sizeof(t_data));
+    ret = (t_game *)malloc(sizeof(t_game));
     if (!ret)
         return (NULL);
     ret->mlx = mlx_init();
@@ -41,35 +41,35 @@ t_data  *t_data_init(t_map *map)
     return (ret);
 }
 
-void    draw_fixed_component(char component, int i, int j, t_data *data)
+void    draw_fixed_component(char component, int i, int j, t_game *game)
 {
     if (component == '1')
-        mlx_put_image_to_window(data->mlx, data->win, data->wall, data->img_px * j, data->img_px * i);
+        mlx_put_image_to_window(game->mlx, game->win, game->wall, game->img_px * j, game->img_px * i);
     else if (component == '0')
-        mlx_put_image_to_window(data->mlx, data->win, data->space, data->img_px * j, data->img_px * i);
+        mlx_put_image_to_window(game->mlx, game->win, game->space, game->img_px * j, game->img_px * i);
     else if (component == 'E')
     {
-        data->exit_coord->x = j;
-        data->exit_coord->y = i;
-        mlx_put_image_to_window(data->mlx, data->win, data->exit, data->img_px * j, data->img_px * i);
+        game->exit_coord->x = j;
+        game->exit_coord->y = i;
+        mlx_put_image_to_window(game->mlx, game->win, game->exit, game->img_px * j, game->img_px * i);
     }
 }
 
-void    draw_mutable_component(char component, int i, int j, t_data *data)
+void    draw_mutable_component(char component, int i, int j, t_game *game)
 {
     if (component == 'P')
     {
-        data->player_coord->x = j;
-        data->player_coord->y = i;
-        mlx_put_image_to_window(data->mlx, data->win, data->player, data->img_px * j, data->img_px * i);
+        game->player_coord->x = j;
+        game->player_coord->y = i;
+        mlx_put_image_to_window(game->mlx, game->win, game->player, game->img_px * j, game->img_px * i);
     }
     else if (component == 'C')
     {
-        mlx_put_image_to_window(data->mlx, data->win, data->item, data->img_px * j, data->img_px * i);
+        mlx_put_image_to_window(game->mlx, game->win, game->item, game->img_px * j, game->img_px * i);
     }
 }
 
-void    draw_mlx_win(t_data *data, t_map *map)
+void    draw_mlx_win(t_game *game, t_map *map)
 {
     int i;
     int j;
@@ -83,24 +83,24 @@ void    draw_mlx_win(t_data *data, t_map *map)
         {
             component = map->map_coord[i][j];
             if (component == '1' || component== '0' || component== 'E')
-                draw_fixed_component(component, i, j, data);
+                draw_fixed_component(component, i, j, game);
             else if (component== 'P' || component == 'C')
-                draw_mutable_component(component, i, j, data);
+                draw_mutable_component(component, i, j, game);
             j++;
         }
         i++;
     }
 }
 
-t_data  *change_coord(int keycode, t_data *data)
+t_game  *change_coord(int keycode, t_game *game)
 {
     int curr_x;
     int curr_y;
     int add_x;
     int add_y;
 
-    curr_x = data->player_coord->x;
-    curr_y = data->player_coord->y;
+    curr_x = game->player_coord->x;
+    curr_y = game->player_coord->y;
     add_x = 0;
     add_y = 0;
     if (keycode == UP)
@@ -111,71 +111,72 @@ t_data  *change_coord(int keycode, t_data *data)
         add_x = 1;
     else if (keycode == LEFT)
         add_x = -1;
-    if (data->map->map_coord[curr_y + add_y][curr_x + add_x] != '1')
+    if (game->map->map_coord[curr_y + add_y][curr_x + add_x] != '1')
     {
-        if (data->map->map_coord[curr_y + add_y][curr_x + add_x] == 'C')
+        if (game->map->map_coord[curr_y + add_y][curr_x + add_x] == 'C')
         {
-            data->map->item_num--;
+            game->map->item_num--;
             printf("item collected\n");
         }
-        if (data->map->map_coord[curr_y + add_y][curr_x + add_x] == 'E')
+        if (game->map->map_coord[curr_y + add_y][curr_x + add_x] == 'E')
         {
-            if (data->map->item_num == 0)
+            if (game->map->item_num == 0)
             {
-                data->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
-                data->map->map_coord[curr_y][curr_x] = '0';
-                data->player_coord->x += add_x;
-                data->player_coord->y += add_y;
-                data->player_move++;
-                printf("player_move: %d\n", data->player_move);
+                game->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
+                game->map->map_coord[curr_y][curr_x] = '0';
+                game->player_coord->x += add_x;
+                game->player_coord->y += add_y;
+                game->player_move++;
+                printf("player_move: %d\n", game->player_move);
+                printf("player exit\n");
                 // exit 후에는 더이상 메모리 걱정안해도 됨. 프로세스 중에 leak만 안생기면 됨!
                 exit(0);
             }
             else
             {
                 // 구조체에 exit coord를 할당햇지만 일단 안쓰고 못 들어가게만 했음.
-                return (data);
+                return (game);
             }
         }
-        data->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
-        data->map->map_coord[curr_y][curr_x] = '0';
-        data->player_coord->x += add_x;
-        data->player_coord->y += add_y;
-        data->player_move++;
-        printf("player_move: %d\n", data->player_move);
+        game->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
+        game->map->map_coord[curr_y][curr_x] = '0';
+        game->player_coord->x += add_x;
+        game->player_coord->y += add_y;
+        game->player_move++;
+        printf("player_move: %d\n", game->player_move);
     }
-    return (data);
+    return (game);
 }
 
-int window_close(t_data *data)
+int window_close(t_game *game)
 {
     // 이 전에 free를 해줘야 할지도 모름.
-    data->player_move = 0;
+    game->player_move = 0;
     printf("window closed\n");
     exit(0);
     return (0);
 }
 
 // (*f)(int keycode, void *param); **param이면 segfault.
-int press_mov_key(int keycode, t_data *data)
+int press_mov_key(int keycode, t_game *game)
 {
     if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
-        data = change_coord(keycode, data);
+        game = change_coord(keycode, game);
     if (keycode == ESC)
-        window_close(data);
-    mlx_clear_window(data->mlx, data->win);
-    draw_mlx_win(data, data->map);
+        window_close(game);
+    mlx_clear_window(game->mlx, game->win);
+    draw_mlx_win(game, game->map);
     return (0);
 }
 
 void    show_mlx_win(t_map *map)
 {
-    t_data  *mlx1;
+    t_game  *game;
 
-    mlx1 = t_data_init(map);
-    if (mlx1)
-        draw_mlx_win(mlx1, map);
-    mlx_hook(mlx1->win, 2, 0, press_mov_key, mlx1);
-    mlx_hook(mlx1->win, 17, 0, window_close, mlx1);
-    mlx_loop(mlx1->mlx);
+    game = game_init(map);
+    if (game)
+        draw_mlx_win(game, map);
+    mlx_hook(game->win, 2, 0, press_mov_key, game);
+    mlx_hook(game->win, 17, 0, window_close, game);
+    mlx_loop(game->mlx);
 }

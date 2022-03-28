@@ -23,7 +23,7 @@ typedef struct s_coord
     int y;
 }   t_coord;
 
-typedef struct s_data
+typedef struct s_game
 {
     void    *mlx;
     void    *win;
@@ -37,7 +37,7 @@ typedef struct s_data
     int player_move;
     t_coord *exit_coord;
     t_map   *map;
-}   t_data;
+}   t_game;
 
 // map related funcs.
 int valid_map_open(const char *dir);
