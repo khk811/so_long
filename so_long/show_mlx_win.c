@@ -25,6 +25,7 @@ typedef struct s_data
     int *exit;
     int *item;
     t_coord *player_coord;
+    t_coord *exit_coord;
     t_map   *map;
 }   t_data;
 
@@ -50,6 +51,15 @@ t_data  *t_data_init(t_map *map)
         ret = NULL;
         return(NULL);
     }
+    ret->exit_coord = (t_coord *)malloc(sizeof(t_coord));
+    if (!(ret->exit_coord))
+    {
+        free(ret->player_coord);
+        free(ret);
+        ret->player_coord = NULL;
+        ret = NULL;
+        return (NULL);
+    }
     ret->player_coord->x = 0;
     ret->player_coord->y = 0;
     ret->map = map;
@@ -63,7 +73,11 @@ void    draw_fixed_component(char component, int i, int j, t_data *data)
     else if (component == '0')
         mlx_put_image_to_window(data->mlx, data->win, data->space, data->img_px * j, data->img_px * i);
     else if (component == 'E')
+    {
+        data->exit_coord->x = j;
+        data->exit_coord->y = i;
         mlx_put_image_to_window(data->mlx, data->win, data->exit, data->img_px * j, data->img_px * i);
+    }
 }
 
 void    draw_mutable_component(char component, int i, int j, t_data *data)
@@ -129,8 +143,9 @@ t_data  *change_coord(int keycode, t_data *data)
             data->map->item_num--;
             printf("item collected\n");
         }
-        if (data->map->map_coord[curr_y + add_y][curr_x + add_x] == 'E' && \
-        data->map->item_num == 0)
+        if (data->map->map_coord[curr_y + add_y][curr_x + add_x] == 'E')
+        {
+            if (data->map->item_num == 0)
             {
                 data->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
                 data->map->map_coord[curr_y][curr_x] = '0';
@@ -139,6 +154,12 @@ t_data  *change_coord(int keycode, t_data *data)
                 // exit 전에 할당 해제를 해야할것. 메모리 누수 발생할 수 있음!
                 exit(0);
             }
+            else
+            {
+                // 구조체에 exit coord를 할당햇지만 일단 안쓰고 못 들어가게만 했음.
+                return (data);
+            }
+        }
         data->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
         data->map->map_coord[curr_y][curr_x] = '0';
         data->player_coord->x += add_x;
