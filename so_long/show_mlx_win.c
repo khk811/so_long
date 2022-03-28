@@ -7,6 +7,7 @@
 #define DOWN    1
 #define RIGHT   2
 #define LEFT    0
+#define ESC     53
 
 typedef struct s_coord
 {
@@ -174,22 +175,24 @@ t_data  *change_coord(int keycode, t_data *data)
     return (data);
 }
 
-// (*f)(int keycode, void *param); **param이면 segfault.
-int press_mov_key(int keycode, t_data *data)
-{
-    if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
-        data = change_coord(keycode, data);
-    mlx_clear_window(data->mlx, data->win);
-    draw_mlx_win(data, data->map);
-    return (0);
-}
-
 int window_close(t_data *data)
 {
     // 이 전에 free를 해줘야 할지도 모름.
     data->player_move = 0;
     printf("window closed\n");
     exit(0);
+    return (0);
+}
+
+// (*f)(int keycode, void *param); **param이면 segfault.
+int press_mov_key(int keycode, t_data *data)
+{
+    if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
+        data = change_coord(keycode, data);
+    if (keycode == ESC)
+        window_close(data);
+    mlx_clear_window(data->mlx, data->win);
+    draw_mlx_win(data, data->map);
     return (0);
 }
 
