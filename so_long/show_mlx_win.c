@@ -155,7 +155,7 @@ t_data  *change_coord(int keycode, t_data *data)
                 data->player_coord->y += add_y;
                 data->player_move++;
                 printf("player_move: %d\n", data->player_move);
-                // exit 전에 할당 해제를 해야할것. 메모리 누수 발생할 수 있음!
+                // exit 후에는 더이상 메모리 걱정안해도 됨. 프로세스 중에 leak만 안생기면 됨!
                 exit(0);
             }
             else
@@ -184,6 +184,15 @@ int press_mov_key(int keycode, t_data *data)
     return (0);
 }
 
+int window_close(t_data *data)
+{
+    // 이 전에 free를 해줘야 할지도 모름.
+    data->player_move = 0;
+    printf("window closed\n");
+    exit(0);
+    return (0);
+}
+
 void    show_mlx_win(t_map *map)
 {
     t_data  *mlx1;
@@ -192,5 +201,6 @@ void    show_mlx_win(t_map *map)
     if (mlx1)
         draw_mlx_win(mlx1, map);
     mlx_hook(mlx1->win, 2, 0, press_mov_key, mlx1);
+    mlx_hook(mlx1->win, 17, 0, window_close, mlx1);
     mlx_loop(mlx1->mlx);
 }
