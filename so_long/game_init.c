@@ -63,9 +63,12 @@ t_game  *game_init(t_map *map)
     t_game  *ret;
 
     ret = (t_game *)malloc(sizeof(t_game));
-    ret = mlx_component_init(ret, map, 60);
-    ret = img_load(ret);
-    ret = player_init(ret);
-    ret = exit_init(ret);
+    mlx_component_init(ret, map, 60);
+    img_load(ret);
+    // player, exit_init에서 잘못되면 game을 할당해제 해야 할거임.
+    // 지금은 함수가 그냥 NULL을 반환하지만 아마 다른 함수랑 연결해서
+    // 에러 메시지나 차후 처리를 해야 할꺼야.
+    player_init(ret);
+    exit_init(ret);
     return (ret);
 }
