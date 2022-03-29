@@ -38,6 +38,26 @@ t_game  *img_load(t_game *game)
     return (game);
 }
 
+t_game  *player_init(t_game *game)
+{
+    game->player_coord = (t_coord *)malloc(sizeof(t_coord));
+    if (!(game->player_coord))
+        return(NULL);
+    game->player_move = 0;
+    game->player_coord->x = 0;
+    game->player_coord->y = 0;
+    return (game);
+}
+
+t_game  *exit_init(t_game *game)
+{
+    game->exit_coord = (t_coord *)malloc(sizeof(t_coord));
+    if (!(game->exit_coord))
+        return (NULL);
+    game->exit_coord->x = 0;
+    game->exit_coord->y = 0;
+    return (game);
+}
 t_game  *game_init(t_map *map)
 {
     t_game  *ret;
@@ -45,24 +65,7 @@ t_game  *game_init(t_map *map)
     ret = (t_game *)malloc(sizeof(t_game));
     ret = mlx_component_init(ret, map, 60);
     ret = img_load(ret);
-    ret->player_coord = (t_coord *)malloc(sizeof(t_coord));
-    if (!(ret->player_coord))
-    {
-        free(ret);
-        ret = NULL;
-        return(NULL);
-    }
-    ret->player_move = 0;
-    ret->exit_coord = (t_coord *)malloc(sizeof(t_coord));
-    if (!(ret->exit_coord))
-    {
-        free(ret->player_coord);
-        free(ret);
-        ret->player_coord = NULL;
-        ret = NULL;
-        return (NULL);
-    }
-    ret->player_coord->x = 0;
-    ret->player_coord->y = 0;
+    ret = player_init(ret);
+    ret = exit_init(ret);
     return (ret);
 }
