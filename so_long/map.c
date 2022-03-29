@@ -5,15 +5,29 @@
 #include "so_long.h"
 
 // argv를 map main 함수 앞에서 거르는데 좋을듯.
-// free_arr, free_arr_arr같은 많이 쓰이는 함수를 util로 빼기.
+
+int check_file_ext(const char *dir)
+{
+    char    *file_ext;
+    unsigned int    start;
+    int ret;
+
+    ret = 1;
+    start = (unsigned int)(ft_strlen(dir) - 4);
+    file_ext = ft_substr(dir, start, 4);
+    if (ft_strncmp(file_ext, ".ber", 4) != 0)
+        ret = 0;
+    free(file_ext);
+    file_ext = NULL;
+    return (ret);
+}
+
 int valid_map_open(const char *dir)
 {
     int ret_fd;
 
     ret_fd = -1;
-    // ft_strncmp(".ber", dir + (ft_strlen(dir) - 4)?, 4);
-    // cmp로 비교해서 일치하지 않으면 -1 반환.
-    if (!ft_strnstr(dir, ".ber", ft_strlen(dir)))
+    if (!check_file_ext(dir))
         return (-1);
     ret_fd = open(dir, O_RDONLY);
     if (ret_fd < 0)
