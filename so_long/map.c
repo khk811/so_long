@@ -44,7 +44,7 @@ int is_char_map_component(char c)
     return (0);
 }
 
-int count_map_component(char *s, t_map **map)
+int count_map_component(char *s, t_map *map)
 {
     int i;
 
@@ -54,11 +54,11 @@ int count_map_component(char *s, t_map **map)
         if (!is_char_map_component(s[i]))
             break ;
         if (s[i] == 'P')
-            (*map)->player_num++;
+            map->player_num++;
         else if (s[i] == 'E')
-            (*map)->exit_num++;
+            map->exit_num++;
         else if (s[i] == 'C')
-            (*map)->item_num++;
+            map->item_num++;
         i++;
     }
     return (i);
@@ -75,7 +75,7 @@ int check_map_component(t_map *map)
     return (1);
 }
 
-int count_map_line(int map_fd, t_map **map)
+int count_map_line(int map_fd, t_map *map)
 {
     char    *map_line;
 
@@ -83,18 +83,18 @@ int count_map_line(int map_fd, t_map **map)
     if (map_fd < 0)
         return (0);
     map_line = get_next_line(map_fd);
-    (*map)->col = count_map_component(map_line, map);
+    map->col = count_map_component(map_line, map);
     while (map_line)
     {
-        ((*map)->row)++;
-        if (count_map_component(map_line, map) != (*map)->col)
+        (map->row)++;
+        if (count_map_component(map_line, map) != map->col)
             return (0);
         free(map_line);
         map_line = get_next_line(map_fd);
     }
     free(map_line);
     map_line = NULL;
-    if (!check_map_component(*map))
+    if (!check_map_component(map))
         return (0);
     return (1);
 }
@@ -120,17 +120,17 @@ char **alloc_map_arr(t_map *map)
     return (ret);
 }
 
-void    assign_map_arr(int map_fd, t_map **map)
+void    assign_map_arr(int map_fd, t_map *map)
 {
     int i;
     const char    *gnl_buf;
 
     i = 0;
     gnl_buf = NULL;
-    while (i < (*map)->row)
+    while (i < map->row)
     {
         gnl_buf = (const char *)get_next_line(map_fd);
-        ft_strlcpy((*map)->map_coord[i], gnl_buf, (*map)->col + 1);
+        ft_strlcpy(map->map_coord[i], gnl_buf, map->col + 1);
         // free UTIL 만들기
         free((char *)gnl_buf);
         gnl_buf = NULL;
@@ -172,7 +172,7 @@ t_map   *map_parsing(const char *dir)
     map_fd = valid_map_open(dir);
     if (map_fd < 0)
         return (NULL);
-    is_ok = count_map_line(map_fd, &the_map);
+    is_ok = count_map_line(map_fd, the_map);
     if (is_ok != 1)
     {
         printf("error: the map isn't right\n");
@@ -184,7 +184,7 @@ t_map   *map_parsing(const char *dir)
     if (map_fd < 0)
         return (NULL);
     the_map->map_coord = alloc_map_arr(the_map);
-    assign_map_arr(map_fd, &the_map);
+    assign_map_arr(map_fd, the_map);
     close(map_fd);
     return (the_map);
 }
