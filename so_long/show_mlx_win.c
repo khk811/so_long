@@ -55,42 +55,53 @@ void    draw_mlx_win(t_game *game, t_map *map)
     }
 }
 
+int calculate_new_y(int keycode, int y)
+{
+
+    if (keycode == UP)
+        y -= 1;
+    else if (keycode == DOWN)
+        y += 1;
+    return (y);
+}
+
+int calculate_new_x(int keycode, int x)
+{
+    if (keycode == LEFT)
+        x -= 1;
+    else if (keycode == RIGHT)
+        x += 1;
+    return (x);
+}
+
 t_game  *change_coord(int keycode, t_game *game)
 {
     int curr_x;
     int curr_y;
-    int add_x;
-    int add_y;
+    int new_x;
+    int new_y;
 
     curr_x = game->player_coord->x;
     curr_y = game->player_coord->y;
-    add_x = 0;
-    add_y = 0;
-    if (keycode == UP)
-        add_y = -1;
-    else if (keycode == DOWN)
-        add_y = 1;
-    else if (keycode == RIGHT)
-        add_x = 1;
-    else if (keycode == LEFT)
-        add_x = -1;
-    if (game->map->map_coord[curr_y + add_y][curr_x + add_x] != '1')
+    new_x = calculate_new_x(keycode, curr_x);
+    new_y = calculate_new_y(keycode, curr_y);
+    if (game->map->map_coord[new_y][new_x] != '1')
     {
-        if (game->map->map_coord[curr_y + add_y][curr_x + add_x] == 'C')
+        if (game->map->map_coord[new_y][new_x] == 'C')
         {
             game->map->item_num--;
             printf("item collected\n");
         }
-        if (game->map->map_coord[curr_y + add_y][curr_x + add_x] == 'E')
+        if (game->map->map_coord[new_y][new_x] == 'E')
         {
             if (game->map->item_num == 0)
             {
-                game->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
+                game->map->map_coord[new_y][new_x] = 'P';
                 game->map->map_coord[curr_y][curr_x] = '0';
-                game->player_coord->x += add_x;
-                game->player_coord->y += add_y;
+                game->player_coord->x = new_x;
+                game->player_coord->y = new_y;
                 game->player_move++;
-                draw_mutable_component('P', curr_y + add_y, curr_x + add_x, game);
+                draw_mutable_component('P', new_y, new_x, game);
                 draw_fixed_component('0', curr_y, curr_x, game);
                 printf("player_move: %d\n", game->player_move);
                 printf("player exit\n");
@@ -103,12 +114,12 @@ t_game  *change_coord(int keycode, t_game *game)
                 return (game);
             }
         }
-        game->map->map_coord[curr_y + add_y][curr_x + add_x] = 'P';
+        game->map->map_coord[new_y][new_x] = 'P';
         game->map->map_coord[curr_y][curr_x] = '0';
-        game->player_coord->x += add_x;
-        game->player_coord->y += add_y;
+        game->player_coord->x = new_x;
+        game->player_coord->y = new_y;
         game->player_move++;
-        draw_mutable_component('P', curr_y + add_y, curr_x + add_x, game);
+        draw_mutable_component('P', new_y, new_x, game);
         draw_fixed_component('0', curr_y, curr_x, game);
         printf("player_move: %d\n", game->player_move);
     }
