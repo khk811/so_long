@@ -16,7 +16,7 @@ int check_file_ext(const char *dir)
     start = (unsigned int)(ft_strlen(dir) - 4);
     file_ext = ft_substr(dir, start, 4);
     if (ft_strncmp(file_ext, ".ber", 4) != 0)
-        ret = 0;
+        ret = error_handling(2);
     free(file_ext);
     file_ext = NULL;
     return (ret);
@@ -31,7 +31,7 @@ int valid_map_open(const char *dir)
         return (-1);
     ret_fd = open(dir, O_RDONLY);
     if (ret_fd < 0)
-        return (-1);
+        return (error_handling(1));
     return (ret_fd);
 }
 
@@ -66,7 +66,7 @@ int count_map_component(char *s, t_map *map)
     while (s[i])
     {
         if (!is_char_map_component(s[i]))
-            break ;
+            break;
         if (s[i] == 'P')
             map->player_num++;
         else if (s[i] == 'E')
@@ -93,23 +93,20 @@ int count_map_line(int map_fd, t_map *map)
 {
     char    *map_line;
 
-// fd 판별은 한번만 햇으면 좋겠음. 여기에서 판별하지 않았으면.
-    if (map_fd < 0)
-        return (0);
     map_line = get_next_line(map_fd);
     map->col = count_map_component(map_line, map);
     while (map_line)
     {
         (map->row)++;
         if (count_map_component(map_line, map) != map->col)
-            return (0);
+            return (error_handling(5));
         free(map_line);
         map_line = get_next_line(map_fd);
     }
     free(map_line);
     map_line = NULL;
     if (!check_map_component(map))
-        return (0);
+        return (error_handling(4));
     return (1);
 }
 
@@ -189,7 +186,7 @@ t_map   *map_parsing(const char *dir)
     is_ok = count_map_line(map_fd, the_map);
     if (is_ok != 1)
     {
-        printf("error: the map isn't right\n");
+        //printf("error: the map isn't right\n");
         close(map_fd);
         return (NULL);
     }

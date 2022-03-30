@@ -3,6 +3,7 @@
 #include <mlx.h>
 #include "so_long.h"
 
+
 void    draw_fixed_component(char component, int i, int j, t_game *game)
 {
     if (component == '1')

@@ -15,7 +15,8 @@ CP=CP
 SRC= main.c \
 	 map.c \
 	 show_mlx_win.c \
-	 game_init.c
+	 game_init.c \
+	 error.c
 OBJ=$(SRC:.c=.o)
 
 $(NAME) : $(OBJ) $(LIB) $(MLX)
