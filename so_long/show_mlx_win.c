@@ -90,6 +90,8 @@ t_game  *change_coord(int keycode, t_game *game)
                 game->player_coord->x += add_x;
                 game->player_coord->y += add_y;
                 game->player_move++;
+                draw_mutable_component('P', curr_y + add_y, curr_x + add_x, game);
+                draw_fixed_component('0', curr_y, curr_x, game);
                 printf("player_move: %d\n", game->player_move);
                 printf("player exit\n");
                 // exit 후에는 더이상 메모리 걱정안해도 됨. 프로세스 중에 leak만 안생기면 됨!
@@ -106,6 +108,8 @@ t_game  *change_coord(int keycode, t_game *game)
         game->player_coord->x += add_x;
         game->player_coord->y += add_y;
         game->player_move++;
+        draw_mutable_component('P', curr_y + add_y, curr_x + add_x, game);
+        draw_fixed_component('0', curr_y, curr_x, game);
         printf("player_move: %d\n", game->player_move);
     }
     return (game);
@@ -124,11 +128,9 @@ int window_close(t_game *game)
 int press_mov_key(int keycode, t_game *game)
 {
     if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
-        game = change_coord(keycode, game);
+        change_coord(keycode, game);
     if (keycode == ESC)
         window_close(game);
-    mlx_clear_window(game->mlx, game->win);
-    draw_mlx_win(game, game->map);
     return (0);
 }
 
