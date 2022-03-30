@@ -11,11 +11,7 @@ void    draw_fixed_component(char component, int i, int j, t_game *game)
     else if (component == '0')
         mlx_put_image_to_window(game->mlx, game->win, game->space, game->img_px * j, game->img_px * i);
     else if (component == 'E')
-    {
-        game->exit_coord->x = j;
-        game->exit_coord->y = i;
         mlx_put_image_to_window(game->mlx, game->win, game->exit, game->img_px * j, game->img_px * i);
-    }
 }
 
 void    draw_mutable_component(char component, int i, int j, t_game *game)
@@ -55,54 +51,46 @@ void    draw_mlx_win(t_game *game, t_map *map)
     }
 }
 
-int calculate_new_y(int keycode, int y)
+t_coord *assign_step_coord(int keycode, t_coord *player, t_coord *step)
 {
-
+    step->x = player->x;
+    step->y = player->y;
     if (keycode == UP)
-        y -= 1;
+        step->y -= 1;
     else if (keycode == DOWN)
-        y += 1;
-    return (y);
-}
-
-int calculate_new_x(int keycode, int x)
-{
-    if (keycode == LEFT)
-        x -= 1;
+        step->y += 1;
+    else if (keycode == LEFT)
+        step->x -= 1;
     else if (keycode == RIGHT)
-        x += 1;
-    return (x);
+        step->x += 1;
+    return (step);
 }
 
-t_game  *change_coord(int keycode, t_game *game)
-{
-    int curr_x;
-    int curr_y;
-    int new_x;
-    int new_y;
+void    exchange_coord(t_map *map, t_coord *player_pos, t_coord *step_pos);
 
-    curr_x = game->player_coord->x;
-    curr_y = game->player_coord->y;
-    new_x = calculate_new_x(keycode, curr_x);
-    new_y = calculate_new_y(keycode, curr_y);
-    if (game->map->map_coord[new_y][new_x] != '1')
+t_game  *change_coord(int keycode, t_game *game, t_map *map)
+{
+    // step_coord, player_coord exchange!!!!
+    t_coord *player_pos;
+    t_coord *step_pos;
+
+    player_pos = game->player_coord;
+    step_pos = assign_step_coord(keycode, player_pos, game->step_coord);
+    if (map->map_coord[step_pos->y][step_pos->x] != '1')
     {
-        if (game->map->map_coord[new_y][new_x] == 'C')
-        {
-            game->map->item_num--;
-            printf("item collected\n");
-        }
-        if (game->map->map_coord[new_y][new_x] == 'E')
+        if (map->map_coord[step_pos->y][step_pos->x] == 'C')
+            map->item_num--;
+        if (map->map_coord[step_pos->y][step_pos->x] == 'E')
         {
             if (game->map->item_num == 0)
             {
-                game->map->map_coord[new_y][new_x] = 'P';
-                game->map->map_coord[curr_y][curr_x] = '0';
-                game->player_coord->x = new_x;
-                game->player_coord->y = new_y;
+                draw_fixed_component('0', player_pos->y, player_pos->x, game);
+                draw_mutable_component('P', step_pos->y, step_pos->x, game);
+                map->map_coord[step_pos->y][step_pos->x] = 'P';
+                map->map_coord[player_pos->y][player_pos->x] = '0';
+                player_pos->x = step_pos->x;
+                player_pos->y = step_pos->y;
                 game->player_move++;
-                draw_mutable_component('P', new_y, new_x, game);
-                draw_fixed_component('0', curr_y, curr_x, game);
                 printf("player_move: %d\n", game->player_move);
                 printf("player exit\n");
                 // exit 후에는 더이상 메모리 걱정안해도 됨. 프로세스 중에 leak만 안생기면 됨!
@@ -114,13 +102,13 @@ t_game  *change_coord(int keycode, t_game *game)
                 return (game);
             }
         }
-        game->map->map_coord[new_y][new_x] = 'P';
-        game->map->map_coord[curr_y][curr_x] = '0';
-        game->player_coord->x = new_x;
-        game->player_coord->y = new_y;
+        draw_fixed_component('0', player_pos->y, player_pos->x, game);
+        draw_mutable_component('P', step_pos->y, step_pos->x, game);
+        map->map_coord[step_pos->y][step_pos->x] = 'P';
+        map->map_coord[player_pos->y][player_pos->x] = '0';
+        player_pos->x = step_pos->x;
+        player_pos->y = step_pos->y;
         game->player_move++;
-        draw_mutable_component('P', new_y, new_x, game);
-        draw_fixed_component('0', curr_y, curr_x, game);
         printf("player_move: %d\n", game->player_move);
     }
     return (game);
@@ -139,7 +127,7 @@ int window_close(t_game *game)
 int press_mov_key(int keycode, t_game *game)
 {
     if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
-        change_coord(keycode, game);
+        change_coord(keycode, game, game->map);
     if (keycode == ESC)
         window_close(game);
     return (0);
