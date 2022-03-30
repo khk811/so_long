@@ -49,13 +49,13 @@ t_game  *player_init(t_game *game)
     return (game);
 }
 
-t_game  *exit_init(t_game *game)
+t_game  *step_init(t_game *game)
 {
-    game->exit_coord = (t_coord *)malloc(sizeof(t_coord));
-    if (!(game->exit_coord))
+    game->step_coord = (t_coord *)malloc(sizeof(t_coord));
+    if (!(game->step_coord))
         return (NULL);
-    game->exit_coord->x = 0;
-    game->exit_coord->y = 0;
+    game->step_coord->x = 0;
+    game->step_coord->y = 0;
     return (game);
 }
 t_game  *game_init(t_map *map)
@@ -69,6 +69,6 @@ t_game  *game_init(t_map *map)
     // 지금은 함수가 그냥 NULL을 반환하지만 아마 다른 함수랑 연결해서
     // 에러 메시지나 차후 처리를 해야 할꺼야.
     player_init(ret);
-    exit_init(ret);
+    step_init(ret);
     return (ret);
 }

@@ -35,7 +35,7 @@ typedef struct s_game
     int *item;
     t_coord *player_coord;
     int player_move;
-    t_coord *exit_coord;
+    t_coord *step_coord;
     t_map   *map;
 }   t_game;
 
@@ -56,4 +56,8 @@ void    show_mlx_win(t_map *map);
 
 // game_init;
 t_game  *game_init(t_map *map);
+
+// error handling function
+int error_handling(int error_code);
+
 #endif
