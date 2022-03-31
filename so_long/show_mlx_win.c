@@ -80,6 +80,22 @@ void    swap_coord(t_coord **coord1, t_coord **coord2)
     *coord2 = tmp;
 }
 
+void    actual_move(t_game *game, t_map *map)
+{
+    t_coord *player;
+    t_coord *step;
+
+    player = game->player_coord;
+    step = game->step_coord;
+    swap_coord(&player, &step);
+    map->map_coord[player->y][player->x] = 'P';
+    map->map_coord[step->y][step->x] = '0';
+    draw_fixed_component('0', step->y, step->x, game);
+    draw_mutable_component('P', player->y, player->x, game);
+    game->player_move++;
+    printf("player move: %d\n", game->player_move);
+}
+
 t_game  *change_coord(int keycode, t_game *game, t_map *map)
 {
     // step_coord, player_coord exchange!!!!
@@ -98,30 +114,14 @@ t_game  *change_coord(int keycode, t_game *game, t_map *map)
         {
             if (map->item_num == 0)
             {
-                draw_fixed_component('0', player_pos->y, player_pos->x, game);
-                draw_mutable_component('P', next_step->y, next_step->x, game);
-                map->map_coord[next_step->y][next_step->x] = 'P';
-                map->map_coord[player_pos->y][player_pos->x] = '0';
-                swap_coord(&player_pos, &next_step);
-                game->player_move++;
-                printf("player_move: %d\n", game->player_move);
-                printf("player exit\n");
+                actual_move(game, game->map);
                 // exit 후에는 더이상 메모리 걱정안해도 됨. 프로세스 중에 leak만 안생기면 됨!
                 exit(0);
             }
             else
-            {
-                // 구조체에 exit coord를 할당햇지만 일단 안쓰고 못 들어가게만 했음.
                 return (game);
-            }
         }
-        draw_fixed_component('0', player_pos->y, player_pos->x, game);
-        draw_mutable_component('P', next_step->y, next_step->x, game);
-        map->map_coord[next_step->y][next_step->x] = 'P';
-        map->map_coord[player_pos->y][player_pos->x] = '0';
-        swap_coord(&player_pos, &next_step);
-        game->player_move++;
-        printf("player_move: %d\n", game->player_move);
+        actual_move(game, game->map);
     }
     return (game);
 }
