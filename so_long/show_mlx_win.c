@@ -51,45 +51,50 @@ void    draw_mlx_win(t_game *game, t_map *map)
     }
 }
 
-t_coord *assign_step_coord(int keycode, t_coord *player, t_coord *step)
+t_coord *calculate_next_step(int keycode, t_game *game)
 {
-    step->x = player->x;
-    step->y = player->y;
-    if (keycode == UP)
-        step->y -= 1;
-    else if (keycode == DOWN)
-        step->y += 1;
-    else if (keycode == LEFT)
-        step->x -= 1;
-    else if (keycode == RIGHT)
-        step->x += 1;
-    return (step);
-}
+    t_coord current_player_position;
+    t_coord *next_step;
 
-void    exchange_coord(t_map *map, t_coord *player_pos, t_coord *step_pos);
+    next_step = game->step_coord;
+    current_player_position = *(game->player_coord);
+    if (keycode == UP)
+        current_player_position.y -= 1;
+    else if (keycode == DOWN)
+        current_player_position.y += 1;
+    else if (keycode == LEFT)
+        current_player_position.x -= 1;
+    else if (keycode == RIGHT)
+        current_player_position.x += 1;
+    next_step->x = current_player_position.x;
+    next_step->y = current_player_position.y;
+    return (next_step);
+}
 
 t_game  *change_coord(int keycode, t_game *game, t_map *map)
 {
     // step_coord, player_coord exchange!!!!
     t_coord *player_pos;
-    t_coord *step_pos;
+    t_coord *next_step;
+    char    next_component;
 
     player_pos = game->player_coord;
-    step_pos = assign_step_coord(keycode, player_pos, game->step_coord);
-    if (map->map_coord[step_pos->y][step_pos->x] != '1')
+    next_step = calculate_next_step(keycode, game);
+    next_component = map->map_coord[next_step->y][next_step->x];
+    if (next_component != '1')
     {
-        if (map->map_coord[step_pos->y][step_pos->x] == 'C')
+        if (next_component == 'C')
             map->item_num--;
-        if (map->map_coord[step_pos->y][step_pos->x] == 'E')
+        if (next_component == 'E')
         {
-            if (game->map->item_num == 0)
+            if (map->item_num == 0)
             {
                 draw_fixed_component('0', player_pos->y, player_pos->x, game);
-                draw_mutable_component('P', step_pos->y, step_pos->x, game);
-                map->map_coord[step_pos->y][step_pos->x] = 'P';
+                draw_mutable_component('P', next_step->y, next_step->x, game);
+                map->map_coord[next_step->y][next_step->x] = 'P';
                 map->map_coord[player_pos->y][player_pos->x] = '0';
-                player_pos->x = step_pos->x;
-                player_pos->y = step_pos->y;
+                player_pos->x = next_step->x;
+                player_pos->y = next_step->y;
                 game->player_move++;
                 printf("player_move: %d\n", game->player_move);
                 printf("player exit\n");
@@ -103,11 +108,11 @@ t_game  *change_coord(int keycode, t_game *game, t_map *map)
             }
         }
         draw_fixed_component('0', player_pos->y, player_pos->x, game);
-        draw_mutable_component('P', step_pos->y, step_pos->x, game);
-        map->map_coord[step_pos->y][step_pos->x] = 'P';
+        draw_mutable_component('P', next_step->y, next_step->x, game);
+        map->map_coord[next_step->y][next_step->x] = 'P';
         map->map_coord[player_pos->y][player_pos->x] = '0';
-        player_pos->x = step_pos->x;
-        player_pos->y = step_pos->y;
+        player_pos->x = next_step->x;
+        player_pos->y = next_step->y;
         game->player_move++;
         printf("player_move: %d\n", game->player_move);
     }
