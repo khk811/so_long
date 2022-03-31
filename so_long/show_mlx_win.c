@@ -3,29 +3,30 @@
 #include <mlx.h>
 #include "so_long.h"
 
-
-void    draw_fixed_component(char component, int i, int j, t_game *game)
+int *find_img_dir(char component, t_game *game)
 {
     if (component == '1')
-        mlx_put_image_to_window(game->mlx, game->win, game->wall, game->img_px * j, game->img_px * i);
+        return (game->wall);
     else if (component == '0')
-        mlx_put_image_to_window(game->mlx, game->win, game->space, game->img_px * j, game->img_px * i);
+        return (game->space);
     else if (component == 'E')
-        mlx_put_image_to_window(game->mlx, game->win, game->exit, game->img_px * j, game->img_px * i);
+        return (game->exit);
+    else if (component == 'C')
+        return (game->item);
+    else
+        return (game->player);
 }
 
-void    draw_mutable_component(char component, int i, int j, t_game *game)
+void    draw_component(char component, int i, int j, t_game *game)
 {
-    if (component == 'P')
-    {
-        game->player_coord->x = j;
-        game->player_coord->y = i;
-        mlx_put_image_to_window(game->mlx, game->win, game->player, game->img_px * j, game->img_px * i);
-    }
-    else if (component == 'C')
-    {
-        mlx_put_image_to_window(game->mlx, game->win, game->item, game->img_px * j, game->img_px * i);
-    }
+    int *img_dir;
+    int x;
+    int y;
+
+    img_dir = find_img_dir(component, game);
+    x = game->img_px * j;
+    y = game->img_px * i;
+    mlx_put_image_to_window(game->mlx, game->win, img_dir, x, y);
 }
 
 void    draw_mlx_win(t_game *game, t_map *map)
@@ -41,10 +42,12 @@ void    draw_mlx_win(t_game *game, t_map *map)
         while (j < map->col)
         {
             component = map->map_coord[i][j];
-            if (component == '1' || component== '0' || component== 'E')
-                draw_fixed_component(component, i, j, game);
-            else if (component== 'P' || component == 'C')
-                draw_mutable_component(component, i, j, game);
+            draw_component(component, i, j, game);
+            if (component == 'P')
+            {
+                game->player_coord->x = j;
+                game->player_coord->y = i;
+            }
             j++;
         }
         i++;
@@ -56,8 +59,8 @@ t_coord *calculate_next_step(int keycode, t_game *game)
     t_coord current_player_position;
     t_coord *next_step;
 
-    next_step = game->step_coord;
     current_player_position = *(game->player_coord);
+    next_step = game->step_coord;
     if (keycode == UP)
         current_player_position.y -= 1;
     else if (keycode == DOWN)
@@ -71,21 +74,21 @@ t_coord *calculate_next_step(int keycode, t_game *game)
     return (next_step);
 }
 
-void    swap_coord(t_coord **coord1, t_coord **coord2)
+void    moving_forward(t_coord **to_go, t_coord **from)
 {
     t_coord *tmp;
 
-    tmp = *coord1;
-    *coord1 = *coord2;
-    *coord2 = tmp;
+    tmp = *to_go;
+    *to_go = *from;
+    *from = tmp;
 }
 
-void    actual_move(t_game *game, t_map *map)
+void    moving_player(t_game *game, t_map *map)
 {
     t_coord *player;
     t_coord *step;
 
-    swap_coord(&(game->player_coord), &(game->step_coord));
+    moving_forward(&(game->step_coord), &(game->player_coord));
     player = game->player_coord;
     step = game->step_coord;
     map->map_coord[player->y][player->x] = 'P';
@@ -94,27 +97,25 @@ void    actual_move(t_game *game, t_map *map)
     printf("player move: %d\n", game->player_move);
 }
 
-int change_coord(int keycode, t_game *game, t_map *map)
+int does_player_move(int keycode, t_game *game, t_map *map)
 {
-    t_coord *player_pos;
     t_coord *next_step;
-    char    next_component;
+    char    next_step_component;
 
-    player_pos = game->player_coord;
     next_step = calculate_next_step(keycode, game);
-    next_component = map->map_coord[next_step->y][next_step->x];
-    if (next_component != '1')
+    next_step_component = map->map_coord[next_step->y][next_step->x];
+    if (next_step_component != '1')
     {
-        if (next_component == 'C')
+        if (next_step_component == 'C')
             map->item_num--;
-        else if (next_component == 'E')
+        else if (next_step_component == 'E')
         {
             if (map->item_num == 0)
                 map->exit_num = 0;
             else
                 return (0);
         }
-        actual_move(game, game->map);
+        moving_player(game, game->map);
         return (1);
     }
     return (0);
@@ -134,10 +135,10 @@ int press_mov_key(int keycode, t_game *game)
 {
     if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
     {
-        if (change_coord(keycode, game, game->map))
+        if (does_player_move(keycode, game, game->map))
         {
-            draw_fixed_component('0', game->step_coord->y, game->step_coord->x, game);
-            draw_mutable_component('P', game->player_coord->y, game->player_coord->x ,game);
+            draw_component('P', game->player_coord->y, game->player_coord->x, game);
+            draw_component('0', game->step_coord->y, game->step_coord->x, game);
         }
         if (game->map->exit_num == 0)
             exit(0);
