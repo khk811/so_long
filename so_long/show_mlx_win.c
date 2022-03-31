@@ -71,6 +71,15 @@ t_coord *calculate_next_step(int keycode, t_game *game)
     return (next_step);
 }
 
+void    swap_coord(t_coord **coord1, t_coord **coord2)
+{
+    t_coord *tmp;
+
+    tmp = *coord1;
+    *coord1 = *coord2;
+    *coord2 = tmp;
+}
+
 t_game  *change_coord(int keycode, t_game *game, t_map *map)
 {
     // step_coord, player_coord exchange!!!!
@@ -93,8 +102,7 @@ t_game  *change_coord(int keycode, t_game *game, t_map *map)
                 draw_mutable_component('P', next_step->y, next_step->x, game);
                 map->map_coord[next_step->y][next_step->x] = 'P';
                 map->map_coord[player_pos->y][player_pos->x] = '0';
-                player_pos->x = next_step->x;
-                player_pos->y = next_step->y;
+                swap_coord(&player_pos, &next_step);
                 game->player_move++;
                 printf("player_move: %d\n", game->player_move);
                 printf("player exit\n");
@@ -111,8 +119,7 @@ t_game  *change_coord(int keycode, t_game *game, t_map *map)
         draw_mutable_component('P', next_step->y, next_step->x, game);
         map->map_coord[next_step->y][next_step->x] = 'P';
         map->map_coord[player_pos->y][player_pos->x] = '0';
-        player_pos->x = next_step->x;
-        player_pos->y = next_step->y;
+        swap_coord(&player_pos, &next_step);
         game->player_move++;
         printf("player_move: %d\n", game->player_move);
     }
