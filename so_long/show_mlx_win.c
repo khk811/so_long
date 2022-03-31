@@ -54,6 +54,17 @@ void    draw_mlx_win(t_game *game, t_map *map)
     }
 }
 
+void    re_draw_player_movement(t_game *game)
+{
+    t_coord *player;
+    t_coord *previous_step;
+
+    player = game->player_coord;
+    previous_step = game->step_coord;
+    draw_component('P', player->y, player->x, game);
+    draw_component('0', previous_step->y, previous_step->x, game);
+}
+
 t_coord *calculate_next_step(int keycode, t_game *game)
 {
     t_coord current_player_position;
@@ -136,10 +147,7 @@ int press_mov_key(int keycode, t_game *game)
     if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
     {
         if (does_player_move(keycode, game, game->map))
-        {
-            draw_component('P', game->player_coord->y, game->player_coord->x, game);
-            draw_component('0', game->step_coord->y, game->step_coord->x, game);
-        }
+            re_draw_player_movement(game);
         if (game->map->exit_num == 0)
             exit(0);
     }
