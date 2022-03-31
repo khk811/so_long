@@ -108,7 +108,7 @@ void    moving_player(t_game *game, t_map *map)
     printf("player move: %d\n", game->player_move);
 }
 
-int does_player_move(int keycode, t_game *game, t_map *map)
+int can_player_move(int keycode, t_game *game, t_map *map)
 {
     t_coord *next_step;
     char    next_step_component;
@@ -126,7 +126,6 @@ int does_player_move(int keycode, t_game *game, t_map *map)
             else
                 return (0);
         }
-        moving_player(game, game->map);
         return (1);
     }
     return (0);
@@ -146,8 +145,11 @@ int press_mov_key(int keycode, t_game *game)
 {
     if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
     {
-        if (does_player_move(keycode, game, game->map))
+        if (can_player_move(keycode, game, game->map))
+        {
+            moving_player(game, game->map);
             re_draw_player_movement(game);
+        }
         if (game->map->exit_num == 0)
             exit(0);
     }
