@@ -85,20 +85,17 @@ void    actual_move(t_game *game, t_map *map)
     t_coord *player;
     t_coord *step;
 
+    swap_coord(&(game->player_coord), &(game->step_coord));
     player = game->player_coord;
     step = game->step_coord;
-    swap_coord(&player, &step);
     map->map_coord[player->y][player->x] = 'P';
     map->map_coord[step->y][step->x] = '0';
-    draw_fixed_component('0', step->y, step->x, game);
-    draw_mutable_component('P', player->y, player->x, game);
     game->player_move++;
     printf("player move: %d\n", game->player_move);
 }
 
-t_game  *change_coord(int keycode, t_game *game, t_map *map)
+int change_coord(int keycode, t_game *game, t_map *map)
 {
-    // step_coord, player_coord exchange!!!!
     t_coord *player_pos;
     t_coord *next_step;
     char    next_component;
@@ -110,20 +107,17 @@ t_game  *change_coord(int keycode, t_game *game, t_map *map)
     {
         if (next_component == 'C')
             map->item_num--;
-        if (next_component == 'E')
+        else if (next_component == 'E')
         {
             if (map->item_num == 0)
-            {
-                actual_move(game, game->map);
-                // exit 후에는 더이상 메모리 걱정안해도 됨. 프로세스 중에 leak만 안생기면 됨!
-                exit(0);
-            }
+                map->exit_num = 0;
             else
-                return (game);
+                return (0);
         }
         actual_move(game, game->map);
+        return (1);
     }
-    return (game);
+    return (0);
 }
 
 int window_close(t_game *game)
@@ -139,7 +133,15 @@ int window_close(t_game *game)
 int press_mov_key(int keycode, t_game *game)
 {
     if (keycode == UP || keycode == DOWN || keycode == RIGHT || keycode == LEFT)
-        change_coord(keycode, game, game->map);
+    {
+        if (change_coord(keycode, game, game->map))
+        {
+            draw_fixed_component('0', game->step_coord->y, game->step_coord->x, game);
+            draw_mutable_component('P', game->player_coord->y, game->player_coord->x ,game);
+        }
+        if (game->map->exit_num == 0)
+            exit(0);
+    }
     if (keycode == ESC)
         window_close(game);
     return (0);
