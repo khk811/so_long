@@ -89,7 +89,9 @@ int check_map_component(t_map *map)
     return (1);
 }
 
-int count_map_line(int map_fd, t_map *map)
+
+
+int count_row_n_col(int map_fd, t_map *map)
 {
     char    *map_line;
 
@@ -183,7 +185,7 @@ t_map   *map_parsing(const char *dir)
     map_fd = valid_map_open(dir);
     if (map_fd < 0)
         return (NULL);
-    is_ok = count_map_line(map_fd, the_map);
+    is_ok = count_row_n_col(map_fd, the_map);
     if (is_ok != 1)
     {
         //printf("error: the map isn't right\n");
