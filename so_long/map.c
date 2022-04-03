@@ -187,5 +187,11 @@ t_map   *map_parsing(const char *dir)
     the_map->map_coord = alloc_map_arr(the_map);
     assign_map_arr(map_fd, the_map);
     close(map_fd);
+    if (!is_map_wall_covered(the_map))
+    {
+        // destroy t_map;
+        error_handling(6);
+        return (NULL);
+    }
     return (the_map);
 }
