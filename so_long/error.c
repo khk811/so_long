@@ -13,7 +13,7 @@ int error_handling(int error_code)
     {
         // fd error
         printf("Error\n : (open) %s\n", strerror(errno));
-        ret = -1;
+        ret = 0;
     }
     else if (error_code == 2)
     {

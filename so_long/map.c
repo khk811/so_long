@@ -10,27 +10,25 @@ int is_file_extension_ber(const char *dir)
 {
     char    *file_ext;
     unsigned int    start;
-    int ret;
 
-    ret = 1;
     start = (unsigned int)(ft_strlen(dir) - 4);
     file_ext = ft_substr(dir, start, 4);
     if (ft_strncmp(file_ext, ".ber", 4) != 0)
-        ret = error_handling(2);
+        return (error_handling(2));
     free(file_ext);
     file_ext = NULL;
-    return (ret);
+    return (1);
 }
 
 int open_map_file(const char *dir, int *fd)
 {
     *fd = -1;
     if (!is_file_extension_ber(dir))
-        return (-1);
+        return (0);
     *fd = open(dir, O_RDONLY);
     if (*fd < 0)
         return (error_handling(1));
-    return (*fd);
+    return (1);
 }
 
 t_map   *map_init(void)
@@ -175,7 +173,7 @@ t_map   *map_parsing(const char *dir)
     int map_fd;
 
     the_map = map_init();
-    if (open_map_file(dir, &map_fd) < 0)
+    if (!open_map_file(dir, &map_fd))
         return (NULL);
     if (!count_row_n_col(map_fd, the_map) || \
         (!are_map_components_enough(the_map)))
@@ -184,7 +182,7 @@ t_map   *map_parsing(const char *dir)
         return (NULL);
     }
     close(map_fd);
-    if (open_map_file(dir, &map_fd) < 0)
+    if (!open_map_file(dir, &map_fd))
         return (NULL);
     the_map->map_coord = alloc_map_arr(the_map);
     assign_map_arr(map_fd, the_map);
