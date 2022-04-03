@@ -22,17 +22,15 @@ int check_file_ext(const char *dir)
     return (ret);
 }
 
-int valid_map_open(const char *dir)
+int valid_map_open(const char *dir, int *fd)
 {
-    int ret_fd;
-
-    ret_fd = -1;
+    *fd = -1;
     if (!check_file_ext(dir))
         return (-1);
-    ret_fd = open(dir, O_RDONLY);
-    if (ret_fd < 0)
+    *fd = open(dir, O_RDONLY);
+    if (*fd < 0)
         return (error_handling(1));
-    return (ret_fd);
+    return (*fd);
 }
 
 t_map   *map_init(void)
@@ -177,19 +175,16 @@ t_map   *map_parsing(const char *dir)
     int map_fd;
 
     the_map = map_init();
-    map_fd = valid_map_open(dir);
-    if (map_fd < 0)
+    if (valid_map_open(dir, &map_fd) < 0)
         return (NULL);
     if (!count_row_n_col(map_fd, the_map) || \
         (!are_map_components_enough(the_map)))
     {
-        //printf("error: the map isn't right\n");
         close(map_fd);
         return (NULL);
     }
     close(map_fd);
-    map_fd = valid_map_open(dir);
-    if (map_fd < 0)
+    if (valid_map_open(dir, &map_fd) < 0)
         return (NULL);
     the_map->map_coord = alloc_map_arr(the_map);
     assign_map_arr(map_fd, the_map);
