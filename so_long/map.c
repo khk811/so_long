@@ -6,7 +6,7 @@
 
 // argv를 map main 함수 앞에서 거르는데 좋을듯.
 
-int check_file_ext(const char *dir)
+int is_file_extension_ber(const char *dir)
 {
     char    *file_ext;
     unsigned int    start;
@@ -22,10 +22,10 @@ int check_file_ext(const char *dir)
     return (ret);
 }
 
-int valid_map_open(const char *dir, int *fd)
+int open_map_file(const char *dir, int *fd)
 {
     *fd = -1;
-    if (!check_file_ext(dir))
+    if (!is_file_extension_ber(dir))
         return (-1);
     *fd = open(dir, O_RDONLY);
     if (*fd < 0)
@@ -175,7 +175,7 @@ t_map   *map_parsing(const char *dir)
     int map_fd;
 
     the_map = map_init();
-    if (valid_map_open(dir, &map_fd) < 0)
+    if (open_map_file(dir, &map_fd) < 0)
         return (NULL);
     if (!count_row_n_col(map_fd, the_map) || \
         (!are_map_components_enough(the_map)))
@@ -184,7 +184,7 @@ t_map   *map_parsing(const char *dir)
         return (NULL);
     }
     close(map_fd);
-    if (valid_map_open(dir, &map_fd) < 0)
+    if (open_map_file(dir, &map_fd) < 0)
         return (NULL);
     the_map->map_coord = alloc_map_arr(the_map);
     assign_map_arr(map_fd, the_map);

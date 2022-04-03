@@ -40,7 +40,7 @@ typedef struct s_game
 }   t_game;
 
 // map related funcs.
-int valid_map_open(const char *dir, int *fd);
+int open_map_file(const char *dir, int *fd);
 t_map   *map_init(void);
 int is_char_map_component(char c);
 int count_map_component(char *s, t_map *map);
