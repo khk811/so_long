@@ -85,7 +85,7 @@ t_coord *calculate_next_step(int keycode, t_game *game)
     return (next_step);
 }
 
-void    moving_forward(t_coord **to_go, t_coord **from)
+void    move_forward(t_coord **to_go, t_coord **from)
 {
     t_coord *tmp;
 
@@ -94,12 +94,12 @@ void    moving_forward(t_coord **to_go, t_coord **from)
     *from = tmp;
 }
 
-void    moving_player(t_game *game, t_map *map)
+void    move_player(t_game *game, t_map *map)
 {
     t_coord *player;
     t_coord *step;
 
-    moving_forward(&(game->step_coord), &(game->player_coord));
+    move_forward(&(game->step_coord), &(game->player_coord));
     player = game->player_coord;
     step = game->step_coord;
     map->map_coord[player->y][player->x] = 'P';
@@ -147,7 +147,7 @@ int press_mov_key(int keycode, t_game *game)
     {
         if (can_player_move(keycode, game, game->map))
         {
-            moving_player(game, game->map);
+            move_player(game, game->map);
             re_draw_player_movement(game);
         }
         if (game->map->exit_num == 0)
