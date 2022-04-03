@@ -78,18 +78,16 @@ int count_map_component(char *s, t_map *map)
     return (i);
 }
 
-int check_map_component(t_map *map)
+int are_map_components_enough(t_map *map)
 {
     if (map->player_num != 1)
-        return (0);
+        return (error_handling(4));
     else if (map->exit_num != 1)
-        return (0);
+        return (error_handling(4));
     else if (map->item_num < 1)
-        return (0);
+        return (error_handling(4));
     return (1);
 }
-
-
 
 int count_row_n_col(int map_fd, t_map *map)
 {
@@ -107,8 +105,6 @@ int count_row_n_col(int map_fd, t_map *map)
     }
     free(map_line);
     map_line = NULL;
-    if (!check_map_component(map))
-        return (error_handling(4));
     return (1);
 }
 
@@ -179,14 +175,13 @@ t_map   *map_parsing(const char *dir)
 {
     t_map   *the_map;
     int map_fd;
-    int is_ok;
 
     the_map = map_init();
     map_fd = valid_map_open(dir);
     if (map_fd < 0)
         return (NULL);
-    is_ok = count_row_n_col(map_fd, the_map);
-    if (is_ok != 1)
+    if (!count_row_n_col(map_fd, the_map) || \
+        (!are_map_components_enough(the_map)))
     {
         //printf("error: the map isn't right\n");
         close(map_fd);
