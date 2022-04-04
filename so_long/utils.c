@@ -22,6 +22,7 @@ void    *free_map(t_map *map)
             free_ptr(map->map_coord[i]);
             i++;
         }
+        free_ptr(map->map_coord);
     }
     free_ptr(map);
     return (NULL);
