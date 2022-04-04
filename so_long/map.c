@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include "so_long.h"
 
-// argv를 map main 함수 앞에서 거르는데 좋을듯.
-
 int is_file_extension_ber(const char *dir)
 {
     char    *file_ext;
@@ -135,9 +133,6 @@ void    assign_map_arr(int map_fd, t_map *map)
     {
         gnl_buf = (const char *)get_next_line(map_fd);
         ft_strlcpy(map->map_coord[i], gnl_buf, map->col + 1);
-        // free UTIL 만들기
-        //free((char *)gnl_buf);
-        //gnl_buf = NULL;
         free_ptr((char *)gnl_buf);
         i++;
     }
@@ -166,6 +161,31 @@ int is_map_wall_covered(t_map *map)
     }
     return (1);
 }
+
+t_map   *open_for_set_map_var(const char *dir, t_map *map, int *fd)
+{
+    if (!open_map_file(dir, fd))
+        return (free_map(map));
+    if (!count_row_n_col(*fd, map) || (!are_map_components_enough(map)))
+    {
+        close(*fd);
+        return (free_map(map));
+    }
+    close(*fd);
+    return (map);
+}
+
+t_map   *open_for_map_alloc(const char *dir, t_map *map, int *fd)
+{
+    if (!open_map_file(dir, fd))
+        return (free_map(map));
+    if (!alloc_map_arr(map))
+        return (free_map(map));
+    assign_map_arr(*fd, map);
+    close(*fd);
+    return (map);
+}
+
 //실제 main 함수에 t_map을 넘길 루트 함수 만들기.
 t_map   *map_parsing(const char *dir)
 {
@@ -175,21 +195,10 @@ t_map   *map_parsing(const char *dir)
     the_map = map_init();
     if (!the_map)
         return (NULL);
-    if (!open_map_file(dir, &map_fd))
-        return (free_map(the_map));
-    if (!count_row_n_col(map_fd, the_map) || \
-        (!are_map_components_enough(the_map)))
-    {
-        close(map_fd);
-        return (free_map(the_map));
-    }
-    close(map_fd);
-    if (!open_map_file(dir, &map_fd))
-        return (free_map(the_map));
-    if (!alloc_map_arr(the_map))
-        return (free_map(the_map));
-    assign_map_arr(map_fd, the_map);
-    close(map_fd);
+    if (!open_for_set_map_var(dir, the_map, &map_fd))
+        return (NULL);
+    if (!open_for_map_alloc(dir, the_map, &map_fd))
+        return (NULL);
     if (!is_map_wall_covered(the_map))
     {
         error_handling(6);
