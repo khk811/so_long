@@ -12,7 +12,10 @@ int is_file_extension_ber(const char *dir)
     start = (unsigned int)(ft_strlen(dir) - 4);
     file_ext = ft_substr(dir, start, 4);
     if (ft_strncmp(file_ext, ".ber", 4) != 0)
+    {
+        free_ptr(file_ext);
         return (error_handling(2));
+    }
     free_ptr(file_ext);
     return (1);
 }
@@ -93,7 +96,10 @@ int count_row_n_col(int map_fd, t_map *map)
     {
         (map->row)++;
         if (count_map_component(map_line, map) != map->col)
+        {
+            free_ptr(map_line);
             return (error_handling(5));
+        }
         free_ptr(map_line);
         map_line = get_next_line(map_fd);
     }
