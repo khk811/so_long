@@ -116,10 +116,9 @@ t_map   *alloc_map_arr(t_map *map)
     {
         ret[i] = (char *)malloc(sizeof(char) * ((map->col) + 1));
         if (!ret[i])
-            return(free_map(map));
+            return(NULL);
         i++;
     }
-    // 2d arr 마지막에 0으로 끝냄;
     ret[i] = 0;
     map->map_coord = ret;
     return (map);
@@ -174,27 +173,27 @@ t_map   *map_parsing(const char *dir)
     int map_fd;
 
     the_map = map_init();
-    if (!open_map_file(dir, &map_fd))
+    if (!the_map)
         return (NULL);
+    if (!open_map_file(dir, &map_fd))
+        return (free_map(the_map));
     if (!count_row_n_col(map_fd, the_map) || \
         (!are_map_components_enough(the_map)))
     {
         close(map_fd);
-        return (NULL);
+        return (free_map(the_map));
     }
     close(map_fd);
     if (!open_map_file(dir, &map_fd))
-        return (NULL);
+        return (free_map(the_map));
     if (!alloc_map_arr(the_map))
-        return (NULL);
+        return (free_map(the_map));
     assign_map_arr(map_fd, the_map);
     close(map_fd);
     if (!is_map_wall_covered(the_map))
     {
-        // destroy t_map;
-        free_map(the_map);
         error_handling(6);
-        return (NULL);
+        return (free_map(the_map));
     }
     return (the_map);
 }
