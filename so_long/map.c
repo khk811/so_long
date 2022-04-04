@@ -15,8 +15,7 @@ int is_file_extension_ber(const char *dir)
     file_ext = ft_substr(dir, start, 4);
     if (ft_strncmp(file_ext, ".ber", 4) != 0)
         return (error_handling(2));
-    free(file_ext);
-    file_ext = NULL;
+    free_ptr(file_ext);
     return (1);
 }
 
@@ -36,7 +35,8 @@ t_map   *map_init(void)
     t_map   *ret;
 
     ret = (t_map *)malloc(sizeof(t_map));
-    // ret 할당 실패시 return NULL;
+    if (!ret)
+        return (NULL);
     ret->row = 0;
     ret->col = 0;
     ret->player_num = 0;
@@ -96,15 +96,14 @@ int count_row_n_col(int map_fd, t_map *map)
         (map->row)++;
         if (count_map_component(map_line, map) != map->col)
             return (error_handling(5));
-        free(map_line);
+        free_ptr(map_line);
         map_line = get_next_line(map_fd);
     }
-    free(map_line);
-    map_line = NULL;
+    free_ptr(map_line);
     return (1);
 }
 
-char **alloc_map_arr(t_map *map)
+t_map   *alloc_map_arr(t_map *map)
 {
     char **ret;
     int i;
@@ -116,13 +115,14 @@ char **alloc_map_arr(t_map *map)
     while (i < map->row)
     {
         ret[i] = (char *)malloc(sizeof(char) * ((map->col) + 1));
-        //if (!ret[i])
-        //  return(ft_free_heap(ret)); 2d 배열 할당 해제
+        if (!ret[i])
+            return(free_map(map));
         i++;
     }
     // 2d arr 마지막에 0으로 끝냄;
     ret[i] = 0;
-    return (ret);
+    map->map_coord = ret;
+    return (map);
 }
 
 void    assign_map_arr(int map_fd, t_map *map)
@@ -137,8 +137,9 @@ void    assign_map_arr(int map_fd, t_map *map)
         gnl_buf = (const char *)get_next_line(map_fd);
         ft_strlcpy(map->map_coord[i], gnl_buf, map->col + 1);
         // free UTIL 만들기
-        free((char *)gnl_buf);
-        gnl_buf = NULL;
+        //free((char *)gnl_buf);
+        //gnl_buf = NULL;
+        free_ptr((char *)gnl_buf);
         i++;
     }
 }
@@ -184,12 +185,14 @@ t_map   *map_parsing(const char *dir)
     close(map_fd);
     if (!open_map_file(dir, &map_fd))
         return (NULL);
-    the_map->map_coord = alloc_map_arr(the_map);
+    if (!alloc_map_arr(the_map))
+        return (NULL);
     assign_map_arr(map_fd, the_map);
     close(map_fd);
     if (!is_map_wall_covered(the_map))
     {
         // destroy t_map;
+        free_map(the_map);
         error_handling(6);
         return (NULL);
     }

@@ -46,7 +46,7 @@ int is_char_map_component(char c);
 int count_map_component(char *s, t_map *map);
 int are_map_components_enough(t_map *map);
 int count_row_n_col(int map_fd, t_map *map);
-char    **alloc_map_arr(t_map *map);
+t_map    *alloc_map_arr(t_map *map);
 void    assign_map_arr(int map_fd, t_map *map);
 int is_map_wall_covered(t_map *map);
 t_map   *map_parsing(const char *dir);
@@ -60,5 +60,9 @@ t_game  *start_game(t_map *map);
 
 // error handling function
 int error_handling(int error_code);
+
+//utils - free, destroy
+void    free_ptr(void *ptr);
+void    *free_map(t_map *map);
 
 #endif
