@@ -55,7 +55,8 @@ t_map   *map_parsing(const char *dir);
 void    show_mlx_win(t_map *map);
 
 // game_init;
-t_game  *game_init(t_map *map);
+//t_game  *game_init(t_map *map);
+t_game  *start_game(t_map *map);
 
 // error handling function
 int error_handling(int error_code);

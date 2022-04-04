@@ -162,7 +162,7 @@ void    show_mlx_win(t_map *map)
 {
     t_game  *game;
 
-    game = game_init(map);
+    game = start_game(map);
     if (game)
         draw_mlx_win(game, map);
     mlx_hook(game->win, 2, 0, press_mov_key, game);

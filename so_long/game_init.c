@@ -58,17 +58,40 @@ t_game  *step_init(t_game *game)
     game->step_coord->y = 0;
     return (game);
 }
+
 t_game  *game_init(t_map *map)
 {
-    t_game  *ret;
+    t_game  *game;
 
-    ret = (t_game *)malloc(sizeof(t_game));
-    mlx_component_init(ret, map, 60);
-    img_load(ret);
+    game = (t_game *)malloc(sizeof(t_game));
+    if (!game)
+        return (NULL);
+    game->mlx = NULL;
+    game->win = NULL;
+    game->img_px = 0;
+    game->wall = NULL;
+    game->space = NULL;
+    game->player = NULL;
+    game->exit = NULL;
+    game->item = NULL;
+    game->player_coord = NULL;
+    game->player_move = 0;
+    game->step_coord = NULL;
+    game->map = map;
+    return (game);
+}
+
+t_game  *start_game(t_map *map)
+{
+    t_game  *game;
+
+    game = game_init(map);
+    mlx_component_init(game, map, 60);
+    img_load(game);
     // player, exit_init에서 잘못되면 game을 할당해제 해야 할거임.
     // 지금은 함수가 그냥 NULL을 반환하지만 아마 다른 함수랑 연결해서
     // 에러 메시지나 차후 처리를 해야 할꺼야.
-    player_init(ret);
-    step_init(ret);
-    return (ret);
+    player_init(game);
+    step_init(game);
+    return (game);
 }
