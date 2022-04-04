@@ -1,6 +1,6 @@
 NAME=so_long
 CC=gcc
-CFLAGS=-Wall -Wextra -Werror -g
+CFLAGS=-Wall -Wextra -Werror
 MLX_DIR=./minilibx_mms_20210621/
 MLX_NAME=mlx
 MLX=$(MLX_DIR)lib$(MLX_NAME).dylib
@@ -36,17 +36,13 @@ $(MLX) :
 
 all : $(NAME)
 
+leaks: $(LIB) $(MLX)
+	$(CC) $(CFLAGS) -g $(SRC) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -framework OpenGL -framework Appkit
+
 clean :
 	make -C $(LIB_DIR) clean
 	make -C $(MLX_DIR) clean
 	$(RM) $(OBJ)
 	$(RM) $(NAME)
 
-leaks : 
-	$(CC) $(CFLAGS) $(SRC) -L$(LIB_DIR) -l$(LIB_NAME)
-
-clear_leaks:
-	rm a.out
-	rm -rf a.out.dSYM
-
-.PHONY: all clean leaks clear_leaks
+.PHONY: all clean
