@@ -14,7 +14,9 @@ int is_file_extension_ber(const char *dir)
     if (ft_strncmp(file_ext, ".ber", 4) != 0)
     {
         free_ptr(file_ext);
-        return (error_handling(2));
+        map_error("is_file_extension_ber()", \
+        "Wrong filename extension");
+        return (0);
     }
     free_ptr(file_ext);
     return (1);

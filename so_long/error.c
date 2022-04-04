@@ -4,6 +4,15 @@
 #include "so_long.h"
 #include "Libft/libft.h"
 
+int map_error(char *func, char *err_msg)
+{
+    printf("Error\n");
+    printf("%s : ", func);
+    printf("%s\n", err_msg);
+    return (0);
+}
+
+
 int error_handling(int error_code)
 {
     int ret;
@@ -39,6 +48,9 @@ int error_handling(int error_code)
         printf("Error\n : (count_map_line) The map is not a rectangular\n");
         ret = 0;
     }
-    
+    else if (error_code == 6)
+    {
+        printf("Error\n : (is_map_wall_covered) The map isn't covered by walls\n");
+    }
     return (ret);
 }

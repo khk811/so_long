@@ -60,6 +60,7 @@ t_game  *start_game(t_map *map);
 
 // error handling function
 int error_handling(int error_code);
+int map_error(char *func, char *err_msg);
 
 //utils - free, destroy
 void    free_ptr(void *ptr);
