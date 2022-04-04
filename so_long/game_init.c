@@ -3,7 +3,7 @@
 #include <mlx.h>
 #include "so_long.h"
 
-t_game  *mlx_component_init(t_game *game, t_map *map, int img_px)
+t_game  *set_mlx(t_game *game, int img_px)
 {
     int win_width;
     int win_height;
@@ -14,16 +14,15 @@ t_game  *mlx_component_init(t_game *game, t_map *map, int img_px)
     if (!(game->mlx))
         return (NULL);
     game->img_px = img_px;
-    game->map = map;
-    win_width = img_px * (map->col);
-    win_height = img_px * (map->row);
+    win_width = img_px * (game->map->col);
+    win_height = img_px * (game->map->row);
     game->win = mlx_new_window(game->mlx, win_width, win_height, "so_long");
     if (!(game->win))
         return (NULL);
     return (game);
 }
 
-t_game  *img_load(t_game *game)
+t_game  *load_img(t_game *game)
 {
     int *img_px;
 
@@ -86,8 +85,8 @@ t_game  *start_game(t_map *map)
     t_game  *game;
 
     game = game_init(map);
-    mlx_component_init(game, map, 60);
-    img_load(game);
+    set_mlx(game, 60);
+    load_img(game);
     // player, exit_init에서 잘못되면 game을 할당해제 해야 할거임.
     // 지금은 함수가 그냥 NULL을 반환하지만 아마 다른 함수랑 연결해서
     // 에러 메시지나 차후 처리를 해야 할꺼야.
