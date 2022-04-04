@@ -85,12 +85,15 @@ t_game  *start_game(t_map *map)
     t_game  *game;
 
     game = game_init(map);
-    set_mlx(game, 60);
-    load_img(game);
-    // player, exit_init에서 잘못되면 game을 할당해제 해야 할거임.
-    // 지금은 함수가 그냥 NULL을 반환하지만 아마 다른 함수랑 연결해서
-    // 에러 메시지나 차후 처리를 해야 할꺼야.
-    player_init(game);
-    step_init(game);
+    if (!game)
+        return (free_map(map));
+    if (!set_mlx(game, 60))
+        return (free_game(game));
+    if (!load_img(game))
+        return (free_game(game));
+    if (!player_init(game))
+        return (free_game(game));
+    if (!step_init(game))
+        return (free_game(game));
     return (game);
 }

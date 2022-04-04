@@ -64,5 +64,6 @@ int error_handling(int error_code);
 //utils - free, destroy
 void    free_ptr(void *ptr);
 void    *free_map(t_map *map);
+void    *free_game(t_game *game);
 
 #endif
