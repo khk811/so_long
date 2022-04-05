@@ -7,6 +7,7 @@ MLX=$(MLX_DIR)lib$(MLX_NAME).dylib
 LIB_NAME=ft
 LIB_DIR=./Libft/
 LIB=$(LIB_DIR)lib$(LIB_NAME).a
+FRAMEWORK= -framework OpenGL -framework Appkit
 INCLUDE=-I ./Libft
 AR=ar
 ARFLAGS=rcs
@@ -21,7 +22,7 @@ SRC= main.c \
 OBJ=$(SRC:.c=.o)
 
 $(NAME) : $(OBJ) $(LIB) $(MLX)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -framework OpenGL -framework Appkit -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -o $(NAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
