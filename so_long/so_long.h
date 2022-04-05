@@ -61,7 +61,6 @@ t_game  *start_game(t_map *map);
 // error handling function
 int error_handling(int error_code);
 int print_error(char *func, char *err_msg);
-int print_str_error(char *func);
 void    *malloc_error(char *func);
 
 //utils - free, destroy

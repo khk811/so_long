@@ -3,6 +3,8 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include "so_long.h"
+#include <errno.h>
+#include <string.h>
 
 int is_file_extension_ber(const char *dir)
 {
@@ -29,7 +31,7 @@ int open_map_file(const char *dir, int *fd)
         return (0);
     *fd = open(dir, O_RDONLY);
     if (*fd < 0)
-        return (print_str_error("open_map_file()"));
+        return (print_error("open_map_file()", strerror(errno)));
     return (1);
 }
 

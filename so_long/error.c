@@ -20,15 +20,6 @@ void    *malloc_error(char *func)
     return (NULL);
 }
 
-
-int print_str_error(char *func)
-{
-    printf("Error\n");
-    printf("%s : ", func);
-    printf("%s\n", strerror(errno));
-    return (0);
-}
-
 int error_handling(int error_code)
 {
     int ret;
