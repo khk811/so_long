@@ -18,7 +18,7 @@
 
 typedef struct s_map
 {
-    char    **map_coord;
+    char    **map_arr;
     int row;
     int col;
     int player_num;

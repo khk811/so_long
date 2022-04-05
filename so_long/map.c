@@ -40,7 +40,7 @@ t_map   *map_init(void)
     ret->player_num = 0;
     ret->exit_num = 0;
     ret->item_num = 0;
-    ret->map_coord = NULL;
+    ret->map_arr = NULL;
     return (ret);
 }
 
@@ -136,7 +136,7 @@ t_map   *alloc_map_arr(t_map *map)
         i++;
     }
     ret[i] = 0;
-    map->map_coord = ret;
+    map->map_arr = ret;
     return (map);
 }
 
@@ -149,7 +149,7 @@ void    assign_map_arr(int fd, t_map *map)
     while (i < map->row)
     {
         map_line = (const char *)get_next_line(fd);
-        ft_strlcpy(map->map_coord[i], map_line, map->col + 1);
+        ft_strlcpy(map->map_arr[i], map_line, map->col + 1);
         free_ptr((char *)map_line);
         i++;
     }
@@ -169,7 +169,7 @@ int is_map_wall_covered(t_map *map)
             if ((i == 0 || i == (map->row) - 1) \
             || (j == 0 || j == (map->col) - 1))
             {
-                if (map->map_coord[i][j] != '1')
+                if (map->map_arr[i][j] != '1')
                 {
                     print_error("is_map_wall_covered()", \
                     "The map isn't wall-covered");

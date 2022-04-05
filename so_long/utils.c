@@ -14,14 +14,14 @@ void    *free_map(t_map *map)
     int i;
 
     i = 0;
-    if (map->map_coord && (map->row != 0))
+    if (map->map_arr && (map->row != 0))
     {
-        while (map->map_coord[i] && i < map->row)
+        while (map->map_arr[i] && i < map->row)
         {
-            free_ptr(map->map_coord[i]);
+            free_ptr(map->map_arr[i]);
             i++;
         }
-        free_ptr(map->map_coord);
+        free_ptr(map->map_arr);
     }
     free_ptr(map);
     return (NULL);
