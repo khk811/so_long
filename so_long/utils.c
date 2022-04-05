@@ -1,6 +1,5 @@
 #include "so_long.h"
-#include "stdlib.h"
-#include <mlx.h>
+
 
 void    free_ptr(void *ptr)
 {
@@ -35,7 +34,7 @@ void    destroy_img(void *mlx, int *img)
     mlx_destroy_image(mlx, img);
 }
 
-void    free_game(t_game *game)
+void    *free_game(t_game *game)
 {
     destroy_img(game->mlx, game->wall);
     destroy_img(game->mlx, game->space);
@@ -48,4 +47,5 @@ void    free_game(t_game *game)
     if (game->win)
         mlx_destroy_window(game->mlx, game->win);
     free_ptr(game);
+    return (NULL);
 }

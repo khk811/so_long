@@ -1,6 +1,15 @@
 #ifndef SO_LONG_H
 # define SO_LONG_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <mlx.h>
+#include "Libft/libft.h"
+
+
 #define UP      13
 #define DOWN    1
 #define RIGHT   2

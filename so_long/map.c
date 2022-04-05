@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include "Libft/libft.h"
-#include <fcntl.h>
-#include <stdlib.h>
 #include "so_long.h"
-#include <errno.h>
-#include <string.h>
 
 int is_file_extension_ber(const char *dir)
 {

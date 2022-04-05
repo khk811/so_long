@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
 #include "so_long.h"
-#include "Libft/libft.h"
 
 int print_error(char *func, char *err_msg)
 {

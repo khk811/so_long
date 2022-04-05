@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <mlx.h>
 #include "so_long.h"
 
 t_game  *set_mlx(t_game *game, int img_px)
