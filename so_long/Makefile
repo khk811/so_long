@@ -13,9 +13,9 @@ ARFLAGS=rcs
 RM=rm -f
 CP=CP
 SRC= main.c \
-	 map.c \
-	 show_mlx_win.c \
-	 game_init.c \
+	 parse_map.c \
+	 play_game.c \
+	 start_game.c \
 	 error.c \
 	 utils.c
 OBJ=$(SRC:.c=.o)
