@@ -1,20 +1,20 @@
 #include "so_long.h"
 
-int is_file_ext_ber(const char *dir)
+int	is_file_ext_ber(const char *dir)
 {
-    char    *file_ext;
-    unsigned int    ext_start;
+	char	*file_ext;
+	unsigned int    ext_start;
 
     ext_start = (unsigned int)(ft_strlen(dir) - 4);
-    file_ext = ft_substr(dir, ext_start, 4);
-    if (ft_strncmp(file_ext, ".ber", 4) != 0)
-    {
-        free_ptr(file_ext);
-        print_error("is_file_ext_ber()", "Wrong file extension");
-        return (0);
-    }
-    free_ptr(file_ext);
-    return (1);
+	file_ext = ft_substr(dir, ext_start, 4);
+	if (ft_strncmp(file_ext, ".ber", 4) != 0)
+	{
+		ft_free(file_ext);
+		print_error("is_file_ext_ber()", "Wrong file extension");
+		return (0);
+	}
+	ft_free(file_ext);
+	return (1);
 }
 
 int open_map_file(const char *dir, int *fd)
@@ -30,18 +30,18 @@ int open_map_file(const char *dir, int *fd)
 
 t_map   *map_init(void)
 {
-    t_map   *ret;
+    t_map   *map;
 
-    ret = (t_map *)malloc(sizeof(t_map));
-    if (!ret)
+    map = (t_map *)malloc(sizeof(t_map));
+    if (!map)
         return (malloc_error("map_init()"));
-    ret->row = 0;
-    ret->col = 0;
-    ret->player_num = 0;
-    ret->exit_num = 0;
-    ret->item_num = 0;
-    ret->map_arr = NULL;
-    return (ret);
+    map->row = 0;
+    map->col = 0;
+    map->player_num = 0;
+    map->exit_num = 0;
+    map->item_num = 0;
+    map->map_arr = NULL;
+    return (map);
 }
 
 int is_char_map_component(char c)
@@ -118,10 +118,10 @@ int count_row_n_col(int map_fd, t_map *map)
         (map->row)++;
         if (count_map_component(map_line, map) != map->col)
             map->col = -42;
-        free_ptr(map_line);
+        ft_free(map_line);
         map_line = get_next_line(map_fd);
     }
-    free_ptr(map_line);
+    ft_free(map_line);
     return (1);
 }
 
@@ -156,7 +156,7 @@ void    assign_map_arr(int fd, t_map *map)
     {
         map_line = (const char *)get_next_line(fd);
         ft_strlcpy(map->map_arr[i], map_line, map->col + 1);
-        free_ptr((char *)map_line);
+        ft_free((char *)map_line);
         i++;
     }
 }
