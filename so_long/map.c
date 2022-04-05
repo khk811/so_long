@@ -93,9 +93,15 @@ int are_map_components_enough(t_map *map)
 
 int is_map_rectangular(t_map *map)
 {
+    char    *func;
+
+    func = "is_map_rectangular()";
     if (map->col < 0 || map->row <= 1)
     {
-        print_error("is_map_rectangular()", "No");
+        if (map->col < 0)
+            print_error(func, "Something wrong with map width");
+        if (map->row <= 1)
+            print_error(func, "Map height is too short");
         return (0);
     }
     return (1);
