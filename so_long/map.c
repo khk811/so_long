@@ -14,7 +14,7 @@ int is_file_extension_ber(const char *dir)
     if (ft_strncmp(file_ext, ".ber", 4) != 0)
     {
         free_ptr(file_ext);
-        map_error("is_file_extension_ber()", \
+        print_error("is_file_extension_ber()", \
         "Wrong filename extension");
         return (0);
     }
@@ -79,19 +79,29 @@ int count_map_component(char *s, t_map *map)
 
 int are_map_components_enough(t_map *map)
 {
-    if (map->player_num != 1)
-        return (error_handling(4));
-    else if (map->exit_num != 1)
-        return (error_handling(4));
-    else if (map->item_num < 1)
-        return (error_handling(4));
+    char    *func;
+
+    func = "are_map_components_enough()";
+    if (map->player_num != 1 || map->exit_num != 1 || \
+    map->item_num < 1)
+    {
+        if (map->player_num != 1)
+            print_error(func, "Wrong player number");
+        if (map->exit_num != 1)
+            print_error(func, "Wrong exit number");
+        if (map->item_num < 1)
+            print_error(func, "Not enough item");
+        return (0);
+    }
     return (1);
 }
 
 int count_row_n_col(int map_fd, t_map *map)
 {
     char    *map_line;
+    char    *func;
 
+    func = "count_row_n_col()";    
     map_line = get_next_line(map_fd);
     map->col = count_map_component(map_line, map);
     while (map_line)
@@ -100,12 +110,14 @@ int count_row_n_col(int map_fd, t_map *map)
         if (count_map_component(map_line, map) != map->col)
         {
             free_ptr(map_line);
-            return (error_handling(5));
+            return (print_error(func, "Not rectangular - coloum error"));
         }
         free_ptr(map_line);
         map_line = get_next_line(map_fd);
     }
     free_ptr(map_line);
+    if (map->row <= 1)
+        return (print_error(func, "Not rectangular - row error"));
     return (1);
 }
 
@@ -209,7 +221,7 @@ t_map   *map_parsing(const char *dir)
         return (NULL);
     if (!is_map_wall_covered(the_map))
     {
-        error_handling(6);
+        print_error("map_parsing()", "Map isn't wall-covered");
         return (free_map(the_map));
     }
     return (the_map);
