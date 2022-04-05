@@ -29,7 +29,7 @@ int open_map_file(const char *dir, int *fd)
         return (0);
     *fd = open(dir, O_RDONLY);
     if (*fd < 0)
-        return (error_handling(1));
+        return (print_str_error("open_map_file()"));
     return (1);
 }
 
@@ -39,7 +39,7 @@ t_map   *map_init(void)
 
     ret = (t_map *)malloc(sizeof(t_map));
     if (!ret)
-        return (NULL);
+        return (malloc_error("map_init()"));
     ret->row = 0;
     ret->col = 0;
     ret->player_num = 0;
@@ -86,11 +86,21 @@ int are_map_components_enough(t_map *map)
     map->item_num < 1)
     {
         if (map->player_num != 1)
-            print_error(func, "Wrong player number");
+            print_error(func, "Too many/few player(s)");
         if (map->exit_num != 1)
-            print_error(func, "Wrong exit number");
+            print_error(func, "Too many/few exit(s)");
         if (map->item_num < 1)
             print_error(func, "Not enough item");
+        return (0);
+    }
+    return (1);
+}
+
+int is_map_rectangular(t_map *map)
+{
+    if (map->col < 0 || map->row <= 1)
+    {
+        print_error("is_map_rectangular()", "No");
         return (0);
     }
     return (1);
@@ -108,16 +118,11 @@ int count_row_n_col(int map_fd, t_map *map)
     {
         (map->row)++;
         if (count_map_component(map_line, map) != map->col)
-        {
-            free_ptr(map_line);
-            return (print_error(func, "Not rectangular - coloum error"));
-        }
+            map->col = -42;
         free_ptr(map_line);
         map_line = get_next_line(map_fd);
     }
     free_ptr(map_line);
-    if (map->row <= 1)
-        return (print_error(func, "Not rectangular - row error"));
     return (1);
 }
 
@@ -128,13 +133,13 @@ t_map   *alloc_map_arr(t_map *map)
 
     ret = (char **)malloc(sizeof(char *) * ((map->row) + 1));
     if (!ret)
-        return (NULL);
+        return (malloc_error("alloc_map_arr()"));
     i = 0;
     while (i < map->row)
     {
         ret[i] = (char *)malloc(sizeof(char) * ((map->col) + 1));
         if (!ret[i])
-            return(NULL);
+            return(malloc_error("alloc_map_arr()"));
         i++;
     }
     ret[i] = 0;
@@ -186,7 +191,8 @@ t_map   *open_for_set_map_var(const char *dir, t_map *map, int *fd)
 {
     if (!open_map_file(dir, fd))
         return (free_map(map));
-    if (!count_row_n_col(*fd, map) || (!are_map_components_enough(map)))
+    count_row_n_col(*fd, map);
+    if (!is_map_rectangular(map) || !are_map_components_enough(map))
     {
         close(*fd);
         return (free_map(map));
@@ -221,7 +227,7 @@ t_map   *map_parsing(const char *dir)
         return (NULL);
     if (!is_map_wall_covered(the_map))
     {
-        print_error("map_parsing()", "Map isn't wall-covered");
+        print_error("map_parsing()", "The map isn't wall-covered");
         return (free_map(the_map));
     }
     return (the_map);

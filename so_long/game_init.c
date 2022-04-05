@@ -41,7 +41,7 @@ t_game  *player_init(t_game *game)
 {
     game->player_coord = (t_coord *)malloc(sizeof(t_coord));
     if (!(game->player_coord))
-        return(NULL);
+        return(malloc_error("player_init()"));
     game->player_move = 0;
     game->player_coord->x = 0;
     game->player_coord->y = 0;
@@ -52,7 +52,7 @@ t_game  *step_init(t_game *game)
 {
     game->step_coord = (t_coord *)malloc(sizeof(t_coord));
     if (!(game->step_coord))
-        return (NULL);
+        return (malloc_error("step_init()"));
     game->step_coord->x = 0;
     game->step_coord->y = 0;
     return (game);
@@ -64,7 +64,7 @@ t_game  *game_init(t_map *map)
 
     game = (t_game *)malloc(sizeof(t_game));
     if (!game)
-        return (NULL);
+        return (malloc_error("game_init()"));
     game->mlx = NULL;
     game->win = NULL;
     game->img_px = 0;
