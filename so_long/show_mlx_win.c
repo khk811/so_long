@@ -155,7 +155,7 @@ int press_mov_key(int keycode, t_game *game)
     return (0);
 }
 
-void    show_mlx_win(t_map *map)
+void    play_game(t_map *map)
 {
     t_game  *game;
 

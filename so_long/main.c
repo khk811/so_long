@@ -11,6 +11,6 @@ int main(int argc, char **argv)
     }
     game_map = parse_map((const char *)argv[1]);
     if (game_map)
-        show_mlx_win(game_map);
+        play_game(game_map);
     return (0);
 }

@@ -52,7 +52,7 @@ typedef struct s_game
 t_map   *parse_map(const char *dir);
 
 // rendering??
-void    show_mlx_win(t_map *map);
+void    play_game(t_map *map);
 
 // game_init;
 //t_game  *game_init(t_map *map);
