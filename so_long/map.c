@@ -1,17 +1,16 @@
 #include "so_long.h"
 
-int is_file_extension_ber(const char *dir)
+int is_file_ext_ber(const char *dir)
 {
     char    *file_ext;
-    unsigned int    start;
+    unsigned int    ext_start;
 
-    start = (unsigned int)(ft_strlen(dir) - 4);
-    file_ext = ft_substr(dir, start, 4);
+    ext_start = (unsigned int)(ft_strlen(dir) - 4);
+    file_ext = ft_substr(dir, ext_start, 4);
     if (ft_strncmp(file_ext, ".ber", 4) != 0)
     {
         free_ptr(file_ext);
-        print_error("is_file_extension_ber()", \
-        "Wrong filename extension");
+        print_error("is_file_ext_ber()", "Wrong file extension");
         return (0);
     }
     free_ptr(file_ext);
@@ -21,7 +20,7 @@ int is_file_extension_ber(const char *dir)
 int open_map_file(const char *dir, int *fd)
 {
     *fd = -1;
-    if (!is_file_extension_ber(dir))
+    if (!is_file_ext_ber(dir))
         return (0);
     *fd = open(dir, O_RDONLY);
     if (*fd < 0)
@@ -105,9 +104,7 @@ int is_map_rectangular(t_map *map)
 int count_row_n_col(int map_fd, t_map *map)
 {
     char    *map_line;
-    char    *func;
 
-    func = "count_row_n_col()";    
     map_line = get_next_line(map_fd);
     map->col = count_map_component(map_line, map);
     while (map_line)
@@ -143,18 +140,17 @@ t_map   *alloc_map_arr(t_map *map)
     return (map);
 }
 
-void    assign_map_arr(int map_fd, t_map *map)
+void    assign_map_arr(int fd, t_map *map)
 {
     int i;
-    const char    *gnl_buf;
+    const char    *map_line;
 
     i = 0;
-    gnl_buf = NULL;
     while (i < map->row)
     {
-        gnl_buf = (const char *)get_next_line(map_fd);
-        ft_strlcpy(map->map_coord[i], gnl_buf, map->col + 1);
-        free_ptr((char *)gnl_buf);
+        map_line = (const char *)get_next_line(fd);
+        ft_strlcpy(map->map_coord[i], map_line, map->col + 1);
+        free_ptr((char *)map_line);
         i++;
     }
 }
@@ -174,7 +170,11 @@ int is_map_wall_covered(t_map *map)
             || (j == 0 || j == (map->col) - 1))
             {
                 if (map->map_coord[i][j] != '1')
+                {
+                    print_error("is_map_wall_covered()", \
+                    "The map isn't wall-covered");
                     return (0);
+                }
             }
             j++;
         }
@@ -202,7 +202,10 @@ t_map   *open_for_map_alloc(const char *dir, t_map *map, int *fd)
     if (!open_map_file(dir, fd))
         return (free_map(map));
     if (!alloc_map_arr(map))
+    {
+        close(*fd);
         return (free_map(map));
+    }
     assign_map_arr(*fd, map);
     close(*fd);
     return (map);
@@ -211,20 +214,17 @@ t_map   *open_for_map_alloc(const char *dir, t_map *map, int *fd)
 //실제 main 함수에 t_map을 넘길 루트 함수 만들기.
 t_map   *parse_map(const char *dir)
 {
-    t_map   *the_map;
+    t_map   *map;
     int map_fd;
 
-    the_map = map_init();
-    if (!the_map)
+    map = map_init();
+    if (!map)
         return (NULL);
-    if (!open_for_set_map_var(dir, the_map, &map_fd))
+    if (!open_for_set_map_var(dir, map, &map_fd))
         return (NULL);
-    if (!open_for_map_alloc(dir, the_map, &map_fd))
+    if (!open_for_map_alloc(dir, map, &map_fd))
         return (NULL);
-    if (!is_map_wall_covered(the_map))
-    {
-        print_error("map_parsing()", "The map isn't wall-covered");
-        return (free_map(the_map));
-    }
-    return (the_map);
+    if (!is_map_wall_covered(map))
+        return (free_map(map));
+    return (map);
 }
