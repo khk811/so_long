@@ -59,7 +59,6 @@ void    show_mlx_win(t_map *map);
 t_game  *start_game(t_map *map);
 
 // error handling function
-int error_handling(int error_code);
 int print_error(char *func, char *err_msg);
 void    *malloc_error(char *func);
 
