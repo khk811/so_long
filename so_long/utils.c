@@ -1,7 +1,7 @@
 #include "so_long.h"
 
 
-void    free_ptr(void *ptr)
+void    ft_free(void *ptr)
 {
     if (!ptr)
         return ;
@@ -18,12 +18,12 @@ void    *free_map(t_map *map)
     {
         while (map->map_arr[i] && i < map->row)
         {
-            free_ptr(map->map_arr[i]);
+            ft_free(map->map_arr[i]);
             i++;
         }
-        free_ptr(map->map_arr);
+        ft_free(map->map_arr);
     }
-    free_ptr(map);
+    ft_free(map);
     return (NULL);
 }
 
@@ -41,11 +41,11 @@ void    *free_game(t_game *game)
     destroy_img(game->mlx, game->player);
     destroy_img(game->mlx, game->exit);
     destroy_img(game->mlx, game->item);
-    free_ptr(game->player_coord);
-    free_ptr(game->step_coord);
+    ft_free(game->player_coord);
+    ft_free(game->step_coord);
     free_map(game->map);
     if (game->win)
         mlx_destroy_window(game->mlx, game->win);
-    free_ptr(game);
+    ft_free(game);
     return (NULL);
 }

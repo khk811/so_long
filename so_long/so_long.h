@@ -49,15 +49,6 @@ typedef struct s_game
 }   t_game;
 
 // map related funcs.
-int open_map_file(const char *dir, int *fd);
-t_map   *map_init(void);
-int is_char_map_component(char c);
-int count_map_component(char *s, t_map *map);
-int are_map_components_enough(t_map *map);
-int count_row_n_col(int map_fd, t_map *map);
-t_map    *alloc_map_arr(t_map *map);
-void    assign_map_arr(int map_fd, t_map *map);
-int is_map_wall_covered(t_map *map);
 t_map   *parse_map(const char *dir);
 
 // rendering??
@@ -73,7 +64,7 @@ int print_error(char *func, char *err_msg);
 void    *malloc_error(char *func);
 
 //utils - free, destroy
-void    free_ptr(void *ptr);
+void    ft_free(void *ptr);
 void    *free_map(t_map *map);
 void    *free_game(t_game *game);
 
