@@ -38,7 +38,7 @@ void    draw_mlx_win(t_game *game, t_map *map)
         j = 0;
         while (j < map->col)
         {
-            component = map->map_coord[i][j];
+            component = map->map_arr[i][j];
             draw_component(component, i, j, game);
             if (component == 'P')
             {
@@ -99,8 +99,8 @@ void    move_player(t_game *game, t_map *map)
     move_forward(&(game->step_coord), &(game->player_coord));
     player = game->player_coord;
     step = game->step_coord;
-    map->map_coord[player->y][player->x] = 'P';
-    map->map_coord[step->y][step->x] = '0';
+    map->map_arr[player->y][player->x] = 'P';
+    map->map_arr[step->y][step->x] = '0';
     game->player_move++;
     printf("player move: %d\n", game->player_move);
 }
@@ -111,7 +111,7 @@ int can_player_move(int keycode, t_game *game, t_map *map)
     char    next_step_component;
 
     next_step = calculate_next_step(keycode, game);
-    next_step_component = map->map_coord[next_step->y][next_step->x];
+    next_step_component = map->map_arr[next_step->y][next_step->x];
     if (next_step_component != '1')
     {
         if (next_step_component == 'C')
