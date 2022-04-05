@@ -4,7 +4,7 @@
 #include "so_long.h"
 #include "Libft/libft.h"
 
-int map_error(char *func, char *err_msg)
+int print_error(char *func, char *err_msg)
 {
     printf("Error\n");
     printf("%s : ", func);

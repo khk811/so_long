@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 
     if (argc != 2)
     {
-        printf("Error\n: (main) Not enough argument\n");
+        print_error("main()", "Not enough arguments");
         return (1);
     }
     the_map = map_parsing((const char*)argv[1]);
