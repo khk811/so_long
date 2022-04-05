@@ -2,15 +2,15 @@
 
 int main(int argc, char **argv)
 {
-    t_map   *the_map;
+    t_map   *game_map;
 
     if (argc != 2)
     {
         print_error("main()", "Not enough arguments");
         return (1);
     }
-    the_map = parse_map((const char *)argv[1]);
-    if (the_map)
-        show_mlx_win(the_map);
+    game_map = parse_map((const char *)argv[1]);
+    if (game_map)
+        show_mlx_win(game_map);
     return (0);
 }
