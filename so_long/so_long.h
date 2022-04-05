@@ -58,7 +58,7 @@ int count_row_n_col(int map_fd, t_map *map);
 t_map    *alloc_map_arr(t_map *map);
 void    assign_map_arr(int map_fd, t_map *map);
 int is_map_wall_covered(t_map *map);
-t_map   *map_parsing(const char *dir);
+t_map   *parse_map(const char *dir);
 
 // rendering??
 void    show_mlx_win(t_map *map);

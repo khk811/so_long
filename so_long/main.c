@@ -9,7 +9,7 @@ int main(int argc, char **argv)
         print_error("main()", "Not enough arguments");
         return (1);
     }
-    the_map = map_parsing((const char*)argv[1]);
+    the_map = parse_map((const char *)argv[1]);
     if (the_map)
         show_mlx_win(the_map);
     return (0);

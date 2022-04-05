@@ -209,7 +209,7 @@ t_map   *open_for_map_alloc(const char *dir, t_map *map, int *fd)
 }
 
 //실제 main 함수에 t_map을 넘길 루트 함수 만들기.
-t_map   *map_parsing(const char *dir)
+t_map   *parse_map(const char *dir)
 {
     t_map   *the_map;
     int map_fd;
