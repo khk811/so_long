@@ -7,10 +7,12 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 	{
 		print_error("main()", "Not enough arguments");
-		return (1);
+		exit(1);
 	}
 	game_map = parse_map((const char *)argv[1]);
 	if (game_map)
 		play_game(game_map);
+	else
+		exit(1);
 	return (0);
 }

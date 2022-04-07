@@ -37,4 +37,6 @@ void	play_game(t_map *map)
 		mlx_hook(game->win, 17, 0, close_window, game);
 		mlx_loop(game->mlx);
 	}
+	else
+		exit(1);
 }
