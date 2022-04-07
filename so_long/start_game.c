@@ -9,13 +9,13 @@ t_game  *set_mlx(t_game *game, int img_px)
         return (NULL);
     game->mlx = mlx_init();
     if (!(game->mlx))
-        return (NULL);
+        return (mlx_error("set_mlx()", "mlx init failed"));
     game->img_px = img_px;
     win_width = img_px * (game->map->col);
     win_height = img_px * (game->map->row);
     game->win = mlx_new_window(game->mlx, win_width, win_height, "so_long");
     if (!(game->win))
-        return (NULL);
+        return (mlx_error("set_mlx()", "can't create new mlx window"));
     return (game);
 }
 
@@ -30,7 +30,7 @@ t_game  *load_img(t_game *game)
     game->exit = mlx_xpm_file_to_image(game->mlx, "./img/exitE.xpm", img_px, img_px);
     game->item = mlx_xpm_file_to_image(game->mlx, "./img/itemC.xpm", img_px, img_px);
     if (!(game->wall) || !(game->space) || !(game->player) || !(game->exit) || !(game->item))
-        return (NULL);
+        return (mlx_error("load_img()", "failed to load xpm image(s)"));
     return (game);
 }
 

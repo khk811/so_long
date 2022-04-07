@@ -65,6 +65,7 @@ void    re_draw_player_movement(t_game *game);
 // error handling function
 int print_error(char *func, char *err_msg);
 void    *malloc_error(char *func);
+void	*mlx_error(char *func, char *err_msg);
 
 //utils - free, destroy
 void    ft_free(void *ptr);
