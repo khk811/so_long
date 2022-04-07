@@ -1,7 +1,7 @@
 NAME=so_long
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror
-MLX_DIR=./minilibx_mms_20210621/
+MLX_DIR=./mlx/
 MLX_NAME=mlx
 MLX=$(MLX_DIR)lib$(MLX_NAME).dylib
 LIB_NAME=ft
@@ -15,14 +15,20 @@ RM=rm -f
 CP=CP
 SRC= main.c \
 	 parse_map.c \
+	 open_for_set_map_var.c \
+	 count_row_n_col.c \
+	 open_map_file.c \
+	 open_for_map_alloc.c \
 	 play_game.c \
 	 start_game.c \
+	 draw.c \
+	 move.c \
 	 error.c \
 	 utils.c
 OBJ=$(SRC:.c=.o)
 
 $(NAME) : $(OBJ) $(LIB) $(MLX)
-	$(CC) $(CFLAGS) $(OBJ) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJ) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) $(FRAMEWORK) -o $(NAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@

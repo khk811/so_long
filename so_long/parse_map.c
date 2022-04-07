@@ -1,33 +1,5 @@
 #include "so_long.h"
 
-int	is_file_ext_ber(const char *dir)
-{
-	char	*file_ext;
-	unsigned int    ext_start;
-
-    ext_start = (unsigned int)(ft_strlen(dir) - 4);
-	file_ext = ft_substr(dir, ext_start, 4);
-	if (ft_strncmp(file_ext, ".ber", 4) != 0)
-	{
-		ft_free(file_ext);
-		print_error("is_file_ext_ber()", "Wrong file extension");
-		return (0);
-	}
-	ft_free(file_ext);
-	return (1);
-}
-
-int open_map_file(const char *dir, int *fd)
-{
-    *fd = -1;
-    if (!is_file_ext_ber(dir))
-        return (0);
-    *fd = open(dir, O_RDONLY);
-    if (*fd < 0)
-        return (print_error("open_map_file()", strerror(errno)));
-    return (1);
-}
-
 t_map   *map_init(void)
 {
     t_map   *map;
@@ -42,123 +14,6 @@ t_map   *map_init(void)
     map->item_num = 0;
     map->map_arr = NULL;
     return (map);
-}
-
-int is_char_map_component(char c)
-{
-    if (c == '1' || c == 'E' || c == '0' \
-    || c == 'P' || c == 'C')
-        return (1);
-    return (0);
-}
-
-int count_map_component(char *s, t_map *map)
-{
-    int i;
-
-    i = 0;
-    while (s[i])
-    {
-        if (!is_char_map_component(s[i]))
-            break;
-        if (s[i] == 'P')
-            map->player_num++;
-        else if (s[i] == 'E')
-            map->exit_num++;
-        else if (s[i] == 'C')
-            map->item_num++;
-        i++;
-    }
-    return (i);
-}
-
-int are_map_components_enough(t_map *map)
-{
-    char    *func;
-
-    func = "are_map_components_enough()";
-    if (map->player_num != 1 || map->exit_num != 1 || \
-    map->item_num < 1)
-    {
-        if (map->player_num != 1)
-            print_error(func, "Too many/few player(s)");
-        if (map->exit_num != 1)
-            print_error(func, "Too many/few exit(s)");
-        if (map->item_num < 1)
-            print_error(func, "Not enough item");
-        return (0);
-    }
-    return (1);
-}
-
-int is_map_rectangular(t_map *map)
-{
-    char    *func;
-
-    func = "is_map_rectangular()";
-    if (map->col < 0 || map->row <= 1)
-    {
-        if (map->col < 0)
-            print_error(func, "Something wrong with map width");
-        if (map->row <= 1)
-            print_error(func, "Map height is too short");
-        return (0);
-    }
-    return (1);
-}
-
-int count_row_n_col(int map_fd, t_map *map)
-{
-    char    *map_line;
-
-    map_line = get_next_line(map_fd);
-    map->col = count_map_component(map_line, map);
-    while (map_line)
-    {
-        (map->row)++;
-        if (count_map_component(map_line, map) != map->col)
-            map->col = -42;
-        ft_free(map_line);
-        map_line = get_next_line(map_fd);
-    }
-    ft_free(map_line);
-    return (1);
-}
-
-t_map   *alloc_map_arr(t_map *map)
-{
-    char **ret;
-    int i;
-
-    ret = (char **)malloc(sizeof(char *) * ((map->row) + 1));
-    if (!ret)
-        return (malloc_error("alloc_map_arr()"));
-    i = 0;
-    while (i < map->row)
-    {
-        ret[i] = (char *)malloc(sizeof(char) * ((map->col) + 1));
-        if (!ret[i])
-            return(malloc_error("alloc_map_arr()"));
-        i++;
-    }
-    ret[i] = 0;
-    map->map_arr = ret;
-    return (map);
-}
-
-void    assign_map_arr(int fd, t_map *map)
-{
-    int i;
-    const char    *map_line;
-
-    i = 0;
-    while (i < map->row)
-    {
-        map_line = (const char *)get_next_line(fd);
-        ft_strlcpy(map->map_arr[i], map_line, map->col + 1);
-        ft_free((char *)map_line);
-        i++;
-    }
 }
 
 int is_map_wall_covered(t_map *map)
@@ -189,35 +44,6 @@ int is_map_wall_covered(t_map *map)
     return (1);
 }
 
-t_map   *open_for_set_map_var(const char *dir, t_map *map, int *fd)
-{
-    if (!open_map_file(dir, fd))
-        return (free_map(map));
-    count_row_n_col(*fd, map);
-    if (!is_map_rectangular(map) || !are_map_components_enough(map))
-    {
-        close(*fd);
-        return (free_map(map));
-    }
-    close(*fd);
-    return (map);
-}
-
-t_map   *open_for_map_alloc(const char *dir, t_map *map, int *fd)
-{
-    if (!open_map_file(dir, fd))
-        return (free_map(map));
-    if (!alloc_map_arr(map))
-    {
-        close(*fd);
-        return (free_map(map));
-    }
-    assign_map_arr(*fd, map);
-    close(*fd);
-    return (map);
-}
-
-//실제 main 함수에 t_map을 넘길 루트 함수 만들기.
 t_map   *parse_map(const char *dir)
 {
     t_map   *map;

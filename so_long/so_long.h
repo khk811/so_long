@@ -50,13 +50,17 @@ typedef struct s_game
 
 // map related funcs.
 t_map   *parse_map(const char *dir);
+int open_map_file(const char *dir, int *fd);
+t_map   *open_for_set_map_var(const char *dir, t_map *map, int *fd);
+int count_row_n_col(int map_fd, t_map *map);
+t_map   *open_for_map_alloc(const char *dir, t_map *map, int *fd);
 
-// rendering??
 void    play_game(t_map *map);
-
-// game_init;
-//t_game  *game_init(t_map *map);
 t_game  *start_game(t_map *map);
+int can_player_move(int keycode, t_game *game, t_map *map);
+void    move_player(t_game *game, t_map *map);
+void    draw_mlx_win(t_game *game, t_map *map);
+void    re_draw_player_movement(t_game *game);
 
 // error handling function
 int print_error(char *func, char *err_msg);
