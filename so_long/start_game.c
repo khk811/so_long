@@ -21,15 +21,18 @@ t_game  *set_mlx(t_game *game, int img_px)
 
 t_game  *set_img(t_game *game)
 {
-    int *img_px;
+    int *px;
+    void    *mlx;
 
-    img_px = &(game->img_px);
-    game->wall = mlx_xpm_file_to_image(game->mlx, "./img/wall1.xpm", img_px, img_px);
-    game->space = mlx_xpm_file_to_image(game->mlx, "./img/void0.xpm", img_px, img_px);
-    game->player = mlx_xpm_file_to_image(game->mlx, "./img/playerP.xpm", img_px, img_px);
-    game->exit = mlx_xpm_file_to_image(game->mlx, "./img/exitE.xpm", img_px, img_px);
-    game->item = mlx_xpm_file_to_image(game->mlx, "./img/itemC.xpm", img_px, img_px);
-    if (!(game->wall) || !(game->space) || !(game->player) || !(game->exit) || !(game->item))
+    px = &(game->img_px);
+    mlx = game->mlx;
+    game->wall = mlx_xpm_file_to_image(mlx, "./img/wall1.xpm", px, px);
+    game->space = mlx_xpm_file_to_image(mlx, "./img/void0.xpm", px, px);
+    game->player = mlx_xpm_file_to_image(mlx, "./img/playerP.xpm", px, px);
+    game->exit = mlx_xpm_file_to_image(mlx, "./img/exitE.xpm", px, px);
+    game->item = mlx_xpm_file_to_image(mlx, "./img/itemC.xpm", px, px);
+    if (!(game->wall) || !(game->space) || !(game->player) \
+        || !(game->exit) || !(game->item))
         return (mlx_error("load_img()", "failed to load xpm image(s)"));
     return (game);
 }
