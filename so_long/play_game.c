@@ -30,8 +30,10 @@ void    play_game(t_map *map)
 
     game = start_game(map);
     if (game)
+    {
         draw_mlx_win(game, map);
-    mlx_hook(game->win, 2, 0, press_mov_key, game);
-    mlx_hook(game->win, 17, 0, window_close, game);
-    mlx_loop(game->mlx);
+        mlx_hook(game->win, 2, 0, press_mov_key, game);
+        mlx_hook(game->win, 17, 0, window_close, game);
+        mlx_loop(game->mlx);
+    }
 }
