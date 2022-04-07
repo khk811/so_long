@@ -2,12 +2,11 @@
 # define SO_LONG_H
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <mlx.h>
-#include "Libft/libft.h"
+#include "mlx.h"
+#include "libft.h"
 
 
 #define UP      13

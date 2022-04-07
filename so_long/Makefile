@@ -1,18 +1,18 @@
 NAME=so_long
 CC=gcc
 CFLAGS=-Wall -Wextra -Werror
-MLX_DIR=./mlx/
+MLX_DIR= ./mlx/
 MLX_NAME=mlx
 MLX=$(MLX_DIR)lib$(MLX_NAME).dylib
+LIBMLX=lib$(MLX_NAME).dylib
 LIB_NAME=ft
-LIB_DIR=./Libft/
+LIB_DIR= ./Libft/
 LIB=$(LIB_DIR)lib$(LIB_NAME).a
+LIBFT=lib$(LIB_NAME).a
 FRAMEWORK= -framework OpenGL -framework Appkit
-INCLUDE=-I ./Libft
-AR=ar
-ARFLAGS=rcs
+INCLUDE=-I ./Libft -I ./mlx
 RM=rm -f
-CP=CP
+CP=cp
 SRC= main.c \
 	 parse_map.c \
 	 open_for_set_map_var.c \
@@ -36,21 +36,32 @@ $(NAME) : $(OBJ) $(LIB) $(MLX)
 
 $(LIB) :
 	make -C $(LIB_DIR) all
-	cp $(LIB) ./
+	$(CP) $(LIB) ./
 
 $(MLX) :
 	make -C $(MLX_DIR) all
-	cp $(MLX) ./
+	$(CP) $(MLX) ./
 
 all : $(NAME)
 
 leaks: $(LIB) $(MLX)
 	$(CC) $(CFLAGS) -g $(SRC) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -framework OpenGL -framework Appkit
 
+clean_leaks :
+	$(RM) a.out
+	$(RM) a.out.dSYM
+
 clean :
 	make -C $(LIB_DIR) clean
 	make -C $(MLX_DIR) clean
 	$(RM) $(OBJ)
-	$(RM) $(NAME)
 
-.PHONY: all clean
+fclean : clean
+	make -C $(LIB_DIR) fclean
+	$(RM) $(NAME)
+	$(RM) $(LIBMLX)
+	$(RM) $(LIBFT)
+
+re : fclean all
+
+.PHONY: all clean fclean re
