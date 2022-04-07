@@ -10,15 +10,15 @@ void	ft_free(void *ptr)
 
 void	*free_map(t_map *map)
 {
-	int	i;
+	int	row;
 
-	i = 0;
+	row = 0;
 	if (map->map_arr && (map->row != 0))
 	{
-		while (map->map_arr[i] && i < map->row)
+		while (map->map_arr[row] && row < map->row)
 		{
-			ft_free(map->map_arr[i]);
-			i++;
+			ft_free(map->map_arr[row]);
+			row++;
 		}
 		ft_free(map->map_arr);
 	}
