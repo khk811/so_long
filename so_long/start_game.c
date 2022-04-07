@@ -2,8 +2,8 @@
 
 t_game  *set_mlx(t_game *game, int img_px)
 {
-    int win_width;
-    int win_height;
+    int width;
+    int height;
 
     if (!game)
         return (NULL);
@@ -11,15 +11,15 @@ t_game  *set_mlx(t_game *game, int img_px)
     if (!(game->mlx))
         return (mlx_error("set_mlx()", "mlx init failed"));
     game->img_px = img_px;
-    win_width = img_px * (game->map->col);
-    win_height = img_px * (game->map->row);
-    game->win = mlx_new_window(game->mlx, win_width, win_height, "so_long");
+    width = img_px * (game->map->col);
+    height = img_px * (game->map->row);
+    game->win = mlx_new_window(game->mlx, width, height, "so_long");
     if (!(game->win))
         return (mlx_error("set_mlx()", "can't create new mlx window"));
     return (game);
 }
 
-t_game  *load_img(t_game *game)
+t_game  *set_img(t_game *game)
 {
     int *img_px;
 
@@ -86,7 +86,7 @@ t_game  *start_game(t_map *map)
         return (free_map(map));
     if (!set_mlx(game, 60))
         return (free_game(game));
-    if (!load_img(game))
+    if (!set_img(game))
         return (free_game(game));
     if (!player_init(game))
         return (free_game(game));

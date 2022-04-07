@@ -18,28 +18,28 @@ t_map   *map_init(void)
 
 int is_map_wall_covered(t_map *map)
 {
-    int i;
-    int j;
+    int row;
+    int col;
 
-    i = 0;
-    while (i < map->row)
+    row = 0;
+    while (row < map->row)
     {
-        j = 0;
-        while (j < map->col)
+        col = 0;
+        while (col < map->col)
         {
-            if ((i == 0 || i == (map->row) - 1) \
-            || (j == 0 || j == (map->col) - 1))
+            if ((row == 0 || row == (map->row) - 1) \
+            || (col == 0 || col == (map->col) - 1))
             {
-                if (map->map_arr[i][j] != '1')
+                if (map->map_arr[row][col] != '1')
                 {
                     print_error("is_map_wall_covered()", \
                     "The map isn't wall-covered");
                     return (0);
                 }
             }
-            j++;
+            col++;
         }
-        i++;
+        row++;
     }
     return (1);
 }

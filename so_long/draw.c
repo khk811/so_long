@@ -1,6 +1,6 @@
 #include "so_long.h"
 
-int *find_img_dir(char component, t_game *game)
+int *find_img_name(char component, t_game *game)
 {
     if (component == '1')
         return (game->wall);
@@ -14,40 +14,40 @@ int *find_img_dir(char component, t_game *game)
         return (game->player);
 }
 
-void    draw_component(char component, int i, int j, t_game *game)
+void    draw_component(char component, int row, int col, t_game *game)
 {
-    int *img_dir;
+    int *img_name;
     int x;
     int y;
 
-    img_dir = find_img_dir(component, game);
-    x = game->img_px * j;
-    y = game->img_px * i;
-    mlx_put_image_to_window(game->mlx, game->win, img_dir, x, y);
+    img_name = find_img_name(component, game);
+    x = game->img_px * col;
+    y = game->img_px * row;
+    mlx_put_image_to_window(game->mlx, game->win, img_name, x, y);
 }
 
 void    draw_mlx_win(t_game *game, t_map *map)
 {
-    int i;
-    int j;
+    int row;
+    int col;
     char    component;
 
-    i = 0;
-    while (i < map->row)
+    row = 0;
+    while (row < map->row)
     {
-        j = 0;
-        while (j < map->col)
+        col = 0;
+        while (col < map->col)
         {
-            component = map->map_arr[i][j];
-            draw_component(component, i, j, game);
+            component = map->map_arr[row][col];
+            draw_component(component, row, col, game);
             if (component == 'P')
             {
-                game->player_coord->x = j;
-                game->player_coord->y = i;
+                game->player_coord->x = col;
+                game->player_coord->y = row;
             }
-            j++;
+            col++;
         }
-        i++;
+        row++;
     }
 }
 
