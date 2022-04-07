@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 14:32:17 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/03/17 20:19:16 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/07 21:26:21 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*ft_memmove_g(void *dst, void *src, int len)
 char	*alloc_arr(char **arr, int size)
 {
 	char	*tmp;
-	 int	tmp_len;
+	int		tmp_len;
 
 	tmp = NULL;
 	tmp_len = 0;

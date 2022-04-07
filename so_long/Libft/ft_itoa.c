@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 13:39:32 by hyunkkim          #+#    #+#             */
-/*   Updated: 2021/12/18 13:22:15 by hyunkkim         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:24:07 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static long	ft_count_digits(long n)
 
 static long	ft_make_divisor(long n)
 {
-	 int	i;
+	int		i;
 	long	result;
 
 	result = 1;
@@ -48,7 +48,7 @@ static long	ft_make_divisor(long n)
 char	*ft_itoa(int n)
 {
 	char	*result;
-	 int	i;
+	int		i;
 	long	divisor;
 	long	long_n;
 

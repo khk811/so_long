@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:22:51 by hyunkkim          #+#    #+#             */
-/*   Updated: 2021/12/18 13:22:57 by hyunkkim         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:25:11 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	        char	*result;
+	char			*result;
 	unsigned int	i;
 
 	if (!s || !f)

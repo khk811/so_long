@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:07:29 by hyunkkim          #+#    #+#             */
-/*   Updated: 2021/12/18 14:03:08 by hyunkkim         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:24:53 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static char	**ft_free_heap(char **s)
 
 static char	**ft_assign_words(const char *s, char c, char **arr)
 {
-	 int	i;
+	int		i;
 	char	*word_start;
 
 	i = 0;
@@ -73,7 +73,7 @@ static char	**ft_assign_words(const char *s, char c, char **arr)
 char	**ft_split(const char *s, char c)
 {
 	char	**result;
-	 int	the_word_num;
+	int		the_word_num;
 
 	if (!s)
 		return (NULL);

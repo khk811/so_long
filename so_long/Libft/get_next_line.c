@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 14:32:07 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/03/17 20:17:35 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/07 21:26:04 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static char	*read_until(char **buf, char **result)
 char	*get_next_line(int fd)
 {
 	static char	*buf = NULL;
-	       char	*result;
-	        int	is_valid;
+	char		*result;
+	int			is_valid;
 
 	result = NULL;
 	is_valid = 0;

@@ -6,7 +6,7 @@
 #    By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/07 21:20:54 by hyunkkim          #+#    #+#              #
-#    Updated: 2022/04/07 21:20:55 by hyunkkim         ###   ########seoul.kr   #
+#    Updated: 2022/04/07 21:32:25 by hyunkkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,7 @@ $(MLX) :
 all : $(NAME)
 
 leaks: $(LIB) $(MLX)
-	$(CC) $(CFLAGS) -g $(SRC) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -framework OpenGL -framework Appkit
+	$(CC) $(CFLAGS) -g $(SRC) $(INCLUDE) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -framework OpenGL -framework Appkit
 
 clean_leaks :
 	$(RM) a.out

@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 13:52:18 by hyunkkim          #+#    #+#             */
-/*   Updated: 2021/12/17 15:53:21 by hyunkkim         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:24:37 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	       size_t	i;
+	size_t			i;
 	unsigned char	*uc_s1;
 	unsigned char	*uc_s2;
 

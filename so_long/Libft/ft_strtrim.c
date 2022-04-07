@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:27:52 by hyunkkim          #+#    #+#             */
-/*   Updated: 2021/12/18 14:14:04 by hyunkkim         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:25:42 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static int	ft_trim_len(char const *s1, char const *set)
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	 int	len;
+	int		len;
 	char	*result;
 
 	if (!s1)

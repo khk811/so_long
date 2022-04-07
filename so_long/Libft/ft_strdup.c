@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:14:58 by hyunkkim          #+#    #+#             */
-/*   Updated: 2021/12/18 13:15:47 by hyunkkim         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:26:35 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 char	*ft_strdup(const char *s1)
 {
-	 int	i;
+	int		i;
 	char	*result;
 
 	i = 0;

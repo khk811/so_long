@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:24:47 by hyunkkim          #+#    #+#             */
-/*   Updated: 2021/12/17 15:54:09 by hyunkkim         ###   ########.fr       */
+/*   Updated: 2022/04/07 21:25:26 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	       size_t	i;
+	size_t			i;
 	unsigned char	*uc_s1;
 	unsigned char	*uc_s2;
 
