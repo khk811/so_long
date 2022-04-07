@@ -57,6 +57,8 @@ t_map   *open_for_map_alloc(const char *dir, t_map *map, int *fd);
 
 void    play_game(t_map *map);
 t_game  *start_game(t_map *map);
+t_game  *set_mlx(t_game *game, int img_px);
+t_game  *set_img(t_game *game);
 int can_player_move(int keycode, t_game *game, t_map *map);
 void    move_player(t_game *game, t_map *map);
 void    draw_mlx_win(t_game *game, t_map *map);

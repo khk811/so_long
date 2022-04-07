@@ -21,6 +21,7 @@ SRC= main.c \
 	 open_for_map_alloc.c \
 	 play_game.c \
 	 start_game.c \
+	 set_mlx_img.c \
 	 draw.c \
 	 move.c \
 	 error.c \
