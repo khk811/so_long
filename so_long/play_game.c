@@ -2,8 +2,7 @@
 
 int window_close(t_game *game)
 {
-    game->player_move = 0;
-    printf("window closed\n");
+    free_game(game);
     exit(0);
     return (0);
 }
@@ -16,9 +15,9 @@ int press_mov_key(int keycode, t_game *game)
         {
             move_player(game, game->map);
             re_draw_player_movement(game);
+            if (game->map->exit_num == 0)
+                window_close(game);
         }
-        if (game->map->exit_num == 0)
-            exit(0);
     }
     if (keycode == ESC)
         window_close(game);
