@@ -6,13 +6,13 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:20:22 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:20:25 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 11:50:00 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	is_char_map_component(char c)
+static int	is_char_map_component(char c)
 {
 	if (c == '1' || c == 'E' || c == '0' \
 			|| c == 'P' || c == 'C')
@@ -20,7 +20,7 @@ int	is_char_map_component(char c)
 	return (0);
 }
 
-int	count_map_component(char *s, t_map *map)
+static int	count_map_component(char *s, t_map *map)
 {
 	int	i;
 

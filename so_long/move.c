@@ -6,13 +6,13 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:21:00 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:21:02 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 11:50:47 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_coord	*calculate_next_step(int keycode, t_game *game)
+static t_coord	*calculate_next_step(int keycode, t_game *game)
 {
 	t_coord	current_player_position;
 	t_coord	*next_step;
@@ -32,7 +32,7 @@ t_coord	*calculate_next_step(int keycode, t_game *game)
 	return (next_step);
 }
 
-void	move_forward(t_coord **to_go, t_coord **from)
+static void	move_forward(t_coord **to_go, t_coord **from)
 {
 	t_coord	*tmp;
 

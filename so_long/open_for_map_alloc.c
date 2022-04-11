@@ -6,13 +6,13 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:21:04 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:21:05 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 11:51:09 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_map	*alloc_map_arr(t_map *map)
+static t_map	*alloc_map_arr(t_map *map)
 {
 	char	**ret;
 	int		row;
@@ -33,7 +33,7 @@ t_map	*alloc_map_arr(t_map *map)
 	return (map);
 }
 
-void	assign_map_arr(int fd, t_map *map)
+static void	assign_map_arr(int fd, t_map *map)
 {
 	int			row;
 	const char	*map_line;

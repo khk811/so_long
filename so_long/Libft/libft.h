@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 14:41:23 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/03/17 20:11:57 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 12:09:27 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include "get_next_line.h"
 
 typedef struct s_list {
-	        void	*content;
+	void			*content;
 	struct s_list	*next;
 }	t_list;
 

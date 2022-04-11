@@ -6,13 +6,13 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:21:12 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:21:13 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 11:51:40 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	is_file_ext_ber(const char *dir)
+static int	is_file_ext_ber(const char *dir)
 {
 	char			*file_ext;
 	unsigned int	ext_start;

@@ -6,13 +6,13 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:21:18 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:21:19 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 11:51:57 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_map	*map_init(void)
+static t_map	*map_init(void)
 {
 	t_map	*map;
 
@@ -28,7 +28,7 @@ t_map	*map_init(void)
 	return (map);
 }
 
-int	is_map_wall_covered(t_map *map)
+static int	is_map_wall_covered(t_map *map)
 {
 	int	row;
 	int	col;

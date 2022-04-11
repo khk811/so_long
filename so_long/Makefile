@@ -6,7 +6,7 @@
 #    By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/04/07 21:20:54 by hyunkkim          #+#    #+#              #
-#    Updated: 2022/04/07 21:32:25 by hyunkkim         ###   ########.fr        #
+#    Updated: 2022/04/08 12:47:43 by hyunkkim         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ SRC= main.c \
 	 utils.c
 OBJ=$(SRC:.c=.o)
 
-$(NAME) : $(OBJ) $(LIB) $(MLX)
+$(NAME) : $(LIB) $(MLX) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) $(FRAMEWORK) -o $(NAME)
 
 %.o : %.c
@@ -55,13 +55,6 @@ $(MLX) :
 	$(CP) $(MLX) ./
 
 all : $(NAME)
-
-leaks: $(LIB) $(MLX)
-	$(CC) $(CFLAGS) -g $(SRC) $(INCLUDE) -L$(LIB_DIR) -L$(MLX_DIR) -l$(LIB_NAME) -l$(MLX_NAME) -framework OpenGL -framework Appkit
-
-clean_leaks :
-	$(RM) a.out
-	$(RM) a.out.dSYM
 
 clean :
 	make -C $(LIB_DIR) clean

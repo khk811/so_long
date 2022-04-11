@@ -6,7 +6,7 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:21:42 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:21:44 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 11:52:42 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	*free_map(t_map *map)
 	return (NULL);
 }
 
-void	destroy_img(void *mlx, int *img)
+static void	destroy_img(void *mlx, int *img)
 {
 	if (!img)
 		return ;

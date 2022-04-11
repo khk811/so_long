@@ -6,13 +6,13 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:21:33 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:21:34 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 11:52:30 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-t_game	*player_init(t_game *game)
+static t_game	*player_init(t_game *game)
 {
 	game->player_coord = (t_coord *)malloc(sizeof(t_coord));
 	if (!(game->player_coord))
@@ -23,7 +23,7 @@ t_game	*player_init(t_game *game)
 	return (game);
 }
 
-t_game	*step_init(t_game *game)
+static t_game	*step_init(t_game *game)
 {
 	game->step_coord = (t_coord *)malloc(sizeof(t_coord));
 	if (!(game->step_coord))
@@ -33,7 +33,7 @@ t_game	*step_init(t_game *game)
 	return (game);
 }
 
-t_game	*game_init(t_map *map)
+static t_game	*game_init(t_map *map)
 {
 	t_game	*game;
 

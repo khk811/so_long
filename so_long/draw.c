@@ -6,13 +6,13 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:20:36 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:20:37 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 11:50:19 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	*find_img_name(char component, t_game *game)
+static int	*find_img_name(char component, t_game *game)
 {
 	if (component == '1')
 		return (game->wall);
@@ -26,7 +26,7 @@ int	*find_img_name(char component, t_game *game)
 		return (game->player);
 }
 
-void	draw_component(char component, int row, int col, t_game *game)
+static void	draw_component(char component, int row, int col, t_game *game)
 {
 	int	*img_name;
 	int	x;

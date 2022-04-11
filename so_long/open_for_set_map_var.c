@@ -6,13 +6,13 @@
 /*   By: hyunkkim <hyunkkim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 21:21:09 by hyunkkim          #+#    #+#             */
-/*   Updated: 2022/04/07 21:21:10 by hyunkkim         ###   ########seoul.kr  */
+/*   Updated: 2022/04/08 12:32:32 by hyunkkim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int	are_map_components_enough(t_map *map)
+static int	are_map_components_enough(t_map *map)
 {
 	char	*func;
 
@@ -31,17 +31,17 @@ int	are_map_components_enough(t_map *map)
 	return (1);
 }
 
-int	is_map_rectangular(t_map *map)
+static int	is_map_rectangular(t_map *map)
 {
 	char	*func;
 
 	func = "is_map_rectangular()";
-	if (map->col < 0 || map->row <= 1)
+	if (map->col <= 1 || map->row <= 1)
 	{
-		if (map->col < 0)
+		if (map->col <= 1)
 			print_error(func, "Something wrong with map width");
 		if (map->row <= 1)
-			print_error(func, "Map height is too short");
+			print_error(func, "Something wrong with map row");
 		return (0);
 	}
 	return (1);
